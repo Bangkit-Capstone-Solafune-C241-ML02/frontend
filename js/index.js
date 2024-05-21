@@ -69,14 +69,17 @@ async function sendCoordinates(lat, lng) {
       throw new Error('Network response was not ok');
     }
 
-    const data = await response.json();
+    // Mengambil blob dari respons
+    const blob = await response.blob();
 
-    // Assuming the server returns a base64 string in the format { "image": "data:image/png;base64,..." }
-    if (data.image) {
-      const img = document.getElementById('map-image');
-      img.src = data.image;
-      img.style.display = 'block';
-    }
+    // Membuat URL objek untuk blob gambar
+    const imgUrl = URL.createObjectURL(blob);
+
+    // Menampilkan gambar di halaman web
+    const imgElement = document.getElementById('map-image');
+    imgElement.src = imgUrl;
+    imgElement.style.display = 'block';
+
   } catch (error) {
     console.error('Error sending coordinates:', error);
   }
