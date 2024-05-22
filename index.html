@@ -35,30 +35,55 @@
     </div>
 
     <!-- Image -->
-    <div class="text-center">
-      <img id="map-image" style="display: none; max-width: 100%; height: auto;" />
+    <div class="image-center">
+      <img id="map-image" style="display: none; max-width: 20%; height: auto;" />
     </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <span class="close">&times;</span>
+      <img class="modal-content" id="img01">
+      <div id="caption"></div>
+    </div>
+
 
     <!-- Footer -->
     <section class="">
       <footer class="text-center text-white" style="background-color: #0a4275;">
         <div class="container p-4 pb-0">
-          <section class="">
+          <!-- <section class="">
             <p class="d-flex justify-content-center align-items-center">
               <span class="me-3">Register for free</span>
               <button data-mdb-ripple-init type="button" class="btn btn-outline-light btn-rounded">
                 Sign up!
               </button>
             </p>
-          </section>
+          </section> -->
         </div>
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-          © 2020 Copyright:
+          © 2024 Copyright:
         </div>
       </footer>
     </section>
 
     <script src="/js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  
+
+    <!-- uncomment untuk nampilin image -->
+    <!-- <script>
+      // JavaScript code to set the image source and display the image
+      document.addEventListener("DOMContentLoaded", function() {
+          const imagePath = "sentinel2_preprocessed2.jpg"; // Replace with the actual path to your image
+          const mapImage = document.getElementById("map-image");
+          
+          // Set the src attribute to the image path
+          mapImage.src = imagePath;
+          
+          // Display the image by changing the display style
+          mapImage.style.display = "block";
+      });
+    </script> -->
+  
   </body>
 </html>
