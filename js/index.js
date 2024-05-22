@@ -1,4 +1,4 @@
-(g => {
+(async g => {
   var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window;
   b = b[c] || (b[c] = {});
   var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => {
@@ -15,11 +15,13 @@
   d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
 })({
   key: "AIzaSyA67rdNaV_KiISNaX2wCeHEkR3FOzmKuQI",
-  v: "weekly"
+  v: "weekly",
+  libraries: 'places'
 });
 
 async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
+  const { SearchBox } = await google.maps.importLibrary("places");
   const myLatlng = { lat: -6.701968812934916, lng: 107.33482749094013 };
   const map = new google.maps.Map(document.getElementById("map"), {
     zoom: 15,
@@ -32,6 +34,43 @@ async function initMap() {
   });
 
   infoWindow.open(map);
+
+  const input = document.getElementById("pac-input");
+  const searchBox = new google.maps.places.SearchBox(input);
+
+  map.addListener("bounds_changed", () => {
+    searchBox.setBounds(map.getBounds());
+  });
+
+  searchBox.addListener("places_changed", () => {
+    const places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+
+    let bounds = new google.maps.LatLngBounds();
+    places.forEach((place) => {
+      if (!place.geometry || !place.geometry.location) {
+        console.log("Returned place contains no geometry");
+        return;
+      }
+
+      new google.maps.Marker({
+        map,
+        title: place.name,
+        position: place.geometry.location,
+      });
+
+      if (place.geometry.viewport) {
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+    });
+    map.fitBounds(bounds);
+  });
+
   map.addListener("click", (mapsMouseEvent) => {
     infoWindow.close();
     infoWindow = new google.maps.InfoWindow({
@@ -45,10 +84,7 @@ async function initMap() {
     const latLng = mapsMouseEvent.latLng.toJSON();
     document.getElementById("lat").textContent = "Latitude: " + latLng.lat;
     document.getElementById("lng").textContent = "Longitude: " + latLng.lng;
-    // console.log("Latitude: ", latLng.lat);
-    // console.log("Longitude: ", latLng.lng);
 
-    // Save the coordinates to use when the Send button is clicked
     window.selectedCoordinates = latLng;
   });
 }
@@ -69,13 +105,9 @@ async function sendCoordinates(lat, lng) {
       throw new Error('Network response was not ok');
     }
 
-    // Mengambil blob dari respons
     const blob = await response.blob();
-
-    // Membuat URL objek untuk blob gambar
     const imgUrl = URL.createObjectURL(blob);
 
-    // Menampilkan gambar di halaman web
     const imgElement = document.getElementById('map-image');
     imgElement.src = imgUrl;
     imgElement.style.display = 'block';
@@ -85,7 +117,6 @@ async function sendCoordinates(lat, lng) {
   }
 }
 
-// Add event listener for the Send button
 document.getElementById('sendBtn').addEventListener('click', () => {
   const latLng = window.selectedCoordinates;
   if (latLng) {
@@ -95,11 +126,7 @@ document.getElementById('sendBtn').addEventListener('click', () => {
   }
 });
 
-// Membuat modal
-// Get the modal
 var modal = document.getElementById("myModal");
-
-// Get the image and insert it inside the modal - use its "alt" text as a caption
 var img = document.getElementById("map-image");
 var modalImg = document.getElementById("img01");
 var captionText = document.getElementById("caption");
@@ -109,13 +136,9 @@ img.onclick = function(){
   captionText.innerHTML = this.alt;
 }
 
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on <span> (x), close the modal
 span.onclick = function() { 
   modal.style.display = "none";
 }
-
 
 initMap();
