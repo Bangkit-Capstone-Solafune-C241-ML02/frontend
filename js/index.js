@@ -90,9 +90,12 @@ async function initMap() {
 }
 
 async function sendCoordinates(lat, lng) {
-  const endpoint = 'http://127.0.0.1:5000/downloadTif'; // Endpoint URL goes here
+  const endpoint = 'http://192.168.56.1:5000/downloadTif'; // Endpoint URL goes here
+  const spinner = document.getElementById('loading-spinner');
 
   try {
+    // Show the loading spinner
+    spinner.style.display = 'block';
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -114,6 +117,9 @@ async function sendCoordinates(lat, lng) {
 
   } catch (error) {
     console.error('Error sending coordinates:', error);
+  } finally {
+    // Hide the loading spinner
+    spinner.style.display = 'none';
   }
 }
 
