@@ -19,11 +19,14 @@
   libraries: 'places'
 });
 
+let map;
+let marker;
+
 async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
   const { SearchBox } = await google.maps.importLibrary("places");
   const myLatlng = { lat: -6.701968812934916, lng: 107.33482749094013 };
-  const map = new google.maps.Map(document.getElementById("map"), {
+  map = new google.maps.Map(document.getElementById("map"), {
     zoom: 15,
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.SATELLITE
@@ -56,11 +59,21 @@ async function initMap() {
         return;
       }
 
-      new google.maps.Marker({
-        map,
-        title: place.name,
-        position: place.geometry.location,
-      });
+      if (!marker) {
+        marker = new google.maps.Marker({
+          map,
+          title: place.name,
+          position: place.geometry.location,
+        });
+      } else {
+        marker.setPosition(place.geometry.location);
+      }
+
+      const latLng = place.geometry.location.toJSON();
+      document.getElementById("lat").textContent = "Latitude: " + latLng.lat;
+      document.getElementById("lng").textContent = "Longitude: " + latLng.lng;
+
+      window.selectedCoordinates = latLng;
 
       if (place.geometry.viewport) {
         bounds.union(place.geometry.viewport);
@@ -86,52 +99,122 @@ async function initMap() {
     document.getElementById("lng").textContent = "Longitude: " + latLng.lng;
 
     window.selectedCoordinates = latLng;
+
+    if (!marker) {
+      marker = new google.maps.Marker({
+        map,
+        position: mapsMouseEvent.latLng,
+      });
+    } else {
+      marker.setPosition(mapsMouseEvent.latLng);
+    }
   });
 }
 
+document.getElementById('sendBtn').addEventListener('click', async () => {
+  const sendBtn = document.getElementById('sendBtn');
+  const sendText = document.getElementById('sendText');
+  const sendSpinner = document.getElementById('sendSpinner');
+  const latLng = window.selectedCoordinates;
+
+  sendBtn.disabled = true;
+  sendText.textContent = "Loading...";
+  sendSpinner.style.display = "inline-block";
+
+  if (latLng) {
+      await sendCoordinates(latLng.lat, latLng.lng);
+  } else {
+      console.warn('No coordinates selected.');
+  }
+
+  // Reset button
+  sendText.textContent = "Send";
+  sendSpinner.style.display = "none";
+  sendBtn.disabled = false;
+});
+
+// Fungsi umum untuk mengubah posisi peta
+function updateMapPosition(lat, lng) {
+  const newLatLng = new google.maps.LatLng(lat, lng);
+  map.setCenter(newLatLng);
+  map.setZoom(15);
+
+  if (!marker) {
+    marker = new google.maps.Marker({
+      map,
+      position: newLatLng,
+    });
+  } else {
+    marker.setPosition(newLatLng);
+  }
+
+  const infoWindow = new google.maps.InfoWindow({
+    position: newLatLng,
+    content: JSON.stringify({ lat, lng }, null, 2)
+  });
+  infoWindow.open(map);
+
+  document.getElementById("lat").textContent = "Latitude: " + lat;
+  document.getElementById("lng").textContent = "Longitude: " + lng;
+
+  window.selectedCoordinates = { lat, lng };
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('./json/coordinates.json')
+    .then(response => response.json())
+    .then(data => {
+      const items = data.items;
+      const dropdownMenu = document.querySelector('.dropdown-menu');
+      dropdownMenu.innerHTML = '';
+
+      items.forEach(item => {
+        const menuItem = document.createElement('a');
+        menuItem.className = 'dropdown-item';
+        menuItem.id = item.id;
+        menuItem.dataset.lat = item.lat;
+        menuItem.dataset.lng = item.lng;
+        menuItem.textContent = item.text;
+        menuItem.addEventListener('click', () => {
+          updateMapPosition(item.lat, item.lng, item.text);
+        });
+        const listItem = document.createElement('li');
+        listItem.appendChild(menuItem);
+        dropdownMenu.appendChild(listItem);
+      });
+    })
+    .catch(error => console.error('Error loading coordinates:', error));
+});
+
 async function sendCoordinates(lat, lng) {
-  const endpoint = 'http://192.168.56.1:5000/downloadTif'; // Endpoint URL goes here
-  const spinner = document.getElementById('loading-spinner');
+  const endpoint = 'http://192.168.56.1:5000/downloadTif';
 
   try {
-    // Show the loading spinner
-    spinner.style.display = 'block';
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ latitude: lat, longitude: lng })
-    });
+      const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ latitude: lat, longitude: lng })
+      });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
 
-    const blob = await response.blob();
-    const imgUrl = URL.createObjectURL(blob);
+      const blob = await response.blob();
+      const imgUrl = URL.createObjectURL(blob);
 
-    const imgElement = document.getElementById('map-image');
-    imgElement.src = imgUrl;
-    imgElement.style.display = 'block';
+      const imgElement = document.getElementById('map-image');
+      imgElement.src = imgUrl;
+      imgElement.style.display = 'block';
 
   } catch (error) {
-    console.error('Error sending coordinates:', error);
-  } finally {
-    // Hide the loading spinner
-    spinner.style.display = 'none';
+      console.error('Error sending coordinates:', error);
   }
 }
 
-document.getElementById('sendBtn').addEventListener('click', () => {
-  const latLng = window.selectedCoordinates;
-  if (latLng) {
-    sendCoordinates(latLng.lat, latLng.lng);
-  } else {
-    console.warn('No coordinates selected.');
-  }
-});
-
+// Modal image preview
 var modal = document.getElementById("myModal");
 var img = document.getElementById("map-image");
 var modalImg = document.getElementById("img01");

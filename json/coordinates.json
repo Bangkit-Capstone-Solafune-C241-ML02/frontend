@@ -1,0 +1,14 @@
+{
+  "items": [
+    { "id": "item1", "lat": 34.935555436135516, "lng": -118.33338988377007, "text": "Solar Star" },
+    { "id": "item2", "lat": 35.5556242248143, "lng": -115.47186204543699, "text": "Ivanpah Solar" },
+    { "id": "item3", "lat": 38.23769398500438, "lng": -117.36345902398234, "text": "Crescent Dunes Solar" },
+    { "id": "item4", "lat": 41.72579520919084, "lng": 22.15401670344236, "text": "Photovoltaic EAM DOO Shtip" },
+    { "id": "item5", "lat": 34.63515860479466, "lng": 134.1531408326481, "text": "Setouchi Kirei Mega Solar" },
+    { "id": "item6", "lat": 42.71652826630978, "lng": 141.79610730106506, "text": "SoftBank Tomatoh Abira Solar" },
+    { "id": "item7", "lat": 52.29175158453118, "lng": 0.31650149921015114, "text": "Solar farms" },
+    { "id": "item8", "lat": -18.892467093732616, "lng": 144.14291278169748, "text": "Kidston Solar" },
+    { "id": "item9", "lat": -28.31341216977502, "lng": 23.365974656698977, "text": "Jasper Solar" },
+    { "id": "item10", "lat": 1.656000374049244, "lng": 125.09363323009345, "text": "PLTS Likupang" }
+  ]
+}
