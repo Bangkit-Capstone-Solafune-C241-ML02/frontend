@@ -187,7 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function sendCoordinates(lat, lng) {
-  const endpoint = 'http://192.168.56.1:5000/downloadTif';
+  const config = await loadConfig();
+  const endpoint = config.ENDPOINT;
 
   try {
       const response = await fetch(endpoint, {
@@ -212,6 +213,13 @@ async function sendCoordinates(lat, lng) {
   } catch (error) {
       console.error('Error sending coordinates:', error);
   }
+}
+
+// Fungsi untuk memuat konfigurasi dari file config.json
+async function loadConfig() {
+  const response = await fetch('./json/config.json');
+  const config = await response.json();
+  return config;
 }
 
 // Modal image preview
