@@ -166,3 +166,6 @@ footer {
   flex-direction: row;
 }
 
+#SelectBand {
+  display: none;
+}

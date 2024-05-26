@@ -136,6 +136,7 @@ document.getElementById('sendBtn').addEventListener('click', async () => {
 
 
 function createInputFields() {
+  document.getElementById('SelectBand').style.display = 'block';
   const container = document.getElementById('dynamicFields');
   container.innerHTML = '';
 
@@ -169,25 +170,39 @@ function createInputFields() {
     container.appendChild(select);
   }
 
-  // Create Convert Button
-  const convertButtonContainer = document.getElementById('convertButtonContainer');
-  convertButtonContainer.innerHTML = ''; // Clear previous button if any
+// Create Convert Button
+const convertButtonContainer = document.getElementById('convertButtonContainer');
+convertButtonContainer.innerHTML = ''; // Clear previous button if any
 
-  const convertBtn = document.createElement('button');
-  convertBtn.id = 'convertBtn';
-  convertBtn.classList.add('btn', 'btn-primary', 'my-2');
-  convertBtn.textContent = 'Convert';
-  
-  convertBtn.addEventListener('click', async () => {
-    const selectedValues = [];
-    for (let i = 1; i <= 3; i++) {
-      const dropdown = document.getElementById(`dropdownField${i}`);
-      selectedValues.push(dropdown.value);
-    }
-    await sendDropdownValues(mapDropdownValues(selectedValues));
-  });
-  
-  convertButtonContainer.appendChild(convertBtn);
+const convertBtn = document.createElement('button');
+convertBtn.id = 'convertBtn';
+convertBtn.classList.add('btn', 'btn-primary', 'my-2');
+convertBtn.innerHTML = '<span id="convertText">Convert</span><span id="convertSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>';
+
+convertBtn.addEventListener('click', async () => {
+  const convertText = document.getElementById('convertText');
+  const convertSpinner = document.getElementById('convertSpinner');
+
+  convertBtn.disabled = true;
+  convertText.textContent = "Loading...";
+  convertSpinner.style.display = "inline-block"; 
+
+  const selectedValues = [];
+  for (let i = 1; i <= 3; i++) {
+    const dropdown = document.getElementById(`dropdownField${i}`);
+    selectedValues.push(dropdown.value);
+  }
+
+  await sendDropdownValues(mapDropdownValues(selectedValues));
+
+  // Reset button
+  convertText.textContent = "Convert";
+  convertSpinner.style.display = "none";
+  convertBtn.disabled = false;
+});
+
+convertButtonContainer.appendChild(convertBtn);
+
 }
 
 function mapDropdownValues(values) {
