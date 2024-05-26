@@ -134,28 +134,106 @@ document.getElementById('sendBtn').addEventListener('click', async () => {
   sendBtn.disabled = false;
 });
 
+
 function createInputFields() {
   const container = document.getElementById('dynamicFields');
-  container.innerHTML = ''; // Clear previous fields if any
+  container.innerHTML = '';
+
+  const bandOptions = [
+    'B1 (Aerosols)',
+    'B2 (Blue)',
+    'B3 (Green)',
+    'B4 (Red)',
+    'B5 (Red Edge 1)',
+    'B6 (Red Edge 2)',
+    'B7 (Red Edge 3)',
+    'B8 (NIR)',
+    'B8A (Red Edge 4)',
+    'B9 (Water vapor)',
+    'B11 (SWIR 1)',
+    'B12 (SWIR 2)',
+  ];
 
   for (let i = 1; i <= 3; i++) {
-    const input = document.createElement('input');
-    input.type = 'number';
-    input.min = 0;
-    input.max = 12;
-    input.classList.add('form-control', 'my-2');
-    input.id = `inputField${i}`;
-    input.placeholder = `Input Field ${i}`;
+    const select = document.createElement('select');
+    select.classList.add('form-select', 'my-2');
+    select.id = `dropdownField${i}`;
 
-    input.addEventListener('input', () => {
-      if (input.value < 0 || input.value > 12) {
-        input.style.borderColor = 'red';
-      } else {
-        input.style.borderColor = 'green';
-      }
+    bandOptions.forEach(optionText => {
+      const option = document.createElement('option');
+      option.value = optionText;
+      option.textContent = optionText;
+      select.appendChild(option);
     });
 
-    container.appendChild(input);
+    container.appendChild(select);
+  }
+
+  // Create Convert Button
+  const convertButtonContainer = document.getElementById('convertButtonContainer');
+  convertButtonContainer.innerHTML = ''; // Clear previous button if any
+
+  const convertBtn = document.createElement('button');
+  convertBtn.id = 'convertBtn';
+  convertBtn.classList.add('btn', 'btn-primary', 'my-2');
+  convertBtn.textContent = 'Convert';
+  
+  convertBtn.addEventListener('click', async () => {
+    const selectedValues = [];
+    for (let i = 1; i <= 3; i++) {
+      const dropdown = document.getElementById(`dropdownField${i}`);
+      selectedValues.push(dropdown.value);
+    }
+    await sendDropdownValues(mapDropdownValues(selectedValues));
+  });
+  
+  convertButtonContainer.appendChild(convertBtn);
+}
+
+function mapDropdownValues(values) {
+  const mapping = {
+    'B1 (Aerosols)': 1,
+    'B2 (Blue)': 2,
+    'B3 (Green)': 3,
+    'B4 (Red)': 4,
+    'B5 (Red Edge 1)': 5,
+    'B6 (Red Edge 2)': 6,
+    'B7 (Red Edge 3)': 7,
+    'B8 (NIR)': 8,
+    'B8A (Red Edge 4)': 9,
+    'B9 (Water vapor)': 10,
+    'B11 (SWIR 1)': 11,
+    'B12 (SWIR 2)': 12
+  };
+
+  return values.map(value => mapping[value]);
+}
+
+async function sendDropdownValues(values) {
+  const config = await loadConfig();
+  const endpoint = config.ENDPOINTCONVERT;
+  
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ values })
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const blob = await response.blob();
+    const imgUrl = URL.createObjectURL(blob);
+
+    const imgElement = document.getElementById('map-image');
+    imgElement.src = imgUrl;
+    imgElement.style.display = 'block';
+  } catch (error) {
+    console.error('Error sending dropdown values:', error);
   }
 }
 
@@ -217,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function sendCoordinates(lat, lng) {
   const config = await loadConfig();
-  const endpoint = config.ENDPOINT;
+  const endpoint = config.ENDPOINTDOWNLOAD;
 
   try {
       const response = await fetch(endpoint, {
