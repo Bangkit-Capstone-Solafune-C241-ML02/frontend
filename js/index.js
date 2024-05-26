@@ -123,6 +123,7 @@ document.getElementById('sendBtn').addEventListener('click', async () => {
 
   if (latLng) {
       await sendCoordinates(latLng.lat, latLng.lng);
+      createInputFields();
   } else {
       console.warn('No coordinates selected.');
   }
@@ -132,6 +133,31 @@ document.getElementById('sendBtn').addEventListener('click', async () => {
   sendSpinner.style.display = "none";
   sendBtn.disabled = false;
 });
+
+function createInputFields() {
+  const container = document.getElementById('dynamicFields');
+  container.innerHTML = ''; // Clear previous fields if any
+
+  for (let i = 1; i <= 3; i++) {
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = 0;
+    input.max = 12;
+    input.classList.add('form-control', 'my-2');
+    input.id = `inputField${i}`;
+    input.placeholder = `Input Field ${i}`;
+
+    input.addEventListener('input', () => {
+      if (input.value < 0 || input.value > 12) {
+        input.style.borderColor = 'red';
+      } else {
+        input.style.borderColor = 'green';
+      }
+    });
+
+    container.appendChild(input);
+  }
+}
 
 // Fungsi umum untuk mengubah posisi peta
 function updateMapPosition(lat, lng) {
@@ -166,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(data => {
       const items = data.items;
       const dropdownMenu = document.querySelector('.dropdown-menu');
+      const dropdownButton = document.getElementById('dropdownMenuButton');
       dropdownMenu.innerHTML = '';
 
       items.forEach(item => {
@@ -177,6 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         menuItem.textContent = item.text;
         menuItem.addEventListener('click', () => {
           updateMapPosition(item.lat, item.lng, item.text);
+          dropdownButton.textContent = item.text; // Ubah teks tombol dropdown
         });
         const listItem = document.createElement('li');
         listItem.appendChild(menuItem);
@@ -185,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(error => console.error('Error loading coordinates:', error));
 });
+
 
 async function sendCoordinates(lat, lng) {
   const config = await loadConfig();
