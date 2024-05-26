@@ -3,7 +3,15 @@ html, body {
   margin: 0;
   display: flex;
   flex-direction: column; 
+
 }
+
+/* body {
+  background-image: url('../images/Background.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+} */
 
 /* Styling untuk map */
 #map {
@@ -157,3 +165,4 @@ footer {
   display: flex;
   flex-direction: row;
 }
+

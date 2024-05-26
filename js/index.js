@@ -123,6 +123,7 @@ document.getElementById('sendBtn').addEventListener('click', async () => {
 
   if (latLng) {
       await sendCoordinates(latLng.lat, latLng.lng);
+      createInputFields();
   } else {
       console.warn('No coordinates selected.');
   }
@@ -132,6 +133,109 @@ document.getElementById('sendBtn').addEventListener('click', async () => {
   sendSpinner.style.display = "none";
   sendBtn.disabled = false;
 });
+
+
+function createInputFields() {
+  const container = document.getElementById('dynamicFields');
+  container.innerHTML = '';
+
+  const bandOptions = [
+    'B1 (Aerosols)',
+    'B2 (Blue)',
+    'B3 (Green)',
+    'B4 (Red)',
+    'B5 (Red Edge 1)',
+    'B6 (Red Edge 2)',
+    'B7 (Red Edge 3)',
+    'B8 (NIR)',
+    'B8A (Red Edge 4)',
+    'B9 (Water vapor)',
+    'B11 (SWIR 1)',
+    'B12 (SWIR 2)',
+  ];
+
+  for (let i = 1; i <= 3; i++) {
+    const select = document.createElement('select');
+    select.classList.add('form-select', 'my-2');
+    select.id = `dropdownField${i}`;
+
+    bandOptions.forEach(optionText => {
+      const option = document.createElement('option');
+      option.value = optionText;
+      option.textContent = optionText;
+      select.appendChild(option);
+    });
+
+    container.appendChild(select);
+  }
+
+  // Create Convert Button
+  const convertButtonContainer = document.getElementById('convertButtonContainer');
+  convertButtonContainer.innerHTML = ''; // Clear previous button if any
+
+  const convertBtn = document.createElement('button');
+  convertBtn.id = 'convertBtn';
+  convertBtn.classList.add('btn', 'btn-primary', 'my-2');
+  convertBtn.textContent = 'Convert';
+  
+  convertBtn.addEventListener('click', async () => {
+    const selectedValues = [];
+    for (let i = 1; i <= 3; i++) {
+      const dropdown = document.getElementById(`dropdownField${i}`);
+      selectedValues.push(dropdown.value);
+    }
+    await sendDropdownValues(mapDropdownValues(selectedValues));
+  });
+  
+  convertButtonContainer.appendChild(convertBtn);
+}
+
+function mapDropdownValues(values) {
+  const mapping = {
+    'B1 (Aerosols)': 1,
+    'B2 (Blue)': 2,
+    'B3 (Green)': 3,
+    'B4 (Red)': 4,
+    'B5 (Red Edge 1)': 5,
+    'B6 (Red Edge 2)': 6,
+    'B7 (Red Edge 3)': 7,
+    'B8 (NIR)': 8,
+    'B8A (Red Edge 4)': 9,
+    'B9 (Water vapor)': 10,
+    'B11 (SWIR 1)': 11,
+    'B12 (SWIR 2)': 12
+  };
+
+  return values.map(value => mapping[value]);
+}
+
+async function sendDropdownValues(values) {
+  const config = await loadConfig();
+  const endpoint = config.ENDPOINTCONVERT;
+  
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ values })
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const blob = await response.blob();
+    const imgUrl = URL.createObjectURL(blob);
+
+    const imgElement = document.getElementById('map-image');
+    imgElement.src = imgUrl;
+    imgElement.style.display = 'block';
+  } catch (error) {
+    console.error('Error sending dropdown values:', error);
+  }
+}
 
 // Fungsi umum untuk mengubah posisi peta
 function updateMapPosition(lat, lng) {
@@ -166,6 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(data => {
       const items = data.items;
       const dropdownMenu = document.querySelector('.dropdown-menu');
+      const dropdownButton = document.getElementById('dropdownMenuButton');
       dropdownMenu.innerHTML = '';
 
       items.forEach(item => {
@@ -177,6 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
         menuItem.textContent = item.text;
         menuItem.addEventListener('click', () => {
           updateMapPosition(item.lat, item.lng, item.text);
+          dropdownButton.textContent = item.text; // Ubah teks tombol dropdown
         });
         const listItem = document.createElement('li');
         listItem.appendChild(menuItem);
@@ -186,9 +292,10 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(error => console.error('Error loading coordinates:', error));
 });
 
+
 async function sendCoordinates(lat, lng) {
   const config = await loadConfig();
-  const endpoint = config.ENDPOINT;
+  const endpoint = config.ENDPOINTDOWNLOAD;
 
   try {
       const response = await fetch(endpoint, {
