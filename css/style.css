@@ -22,7 +22,6 @@ html, body {
   margin-top: 10px;
   border-radius: 10px;
 }
-
 #map:hover {
   box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.5);
 }
