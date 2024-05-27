@@ -6,6 +6,7 @@ html, body {
 
 }
 
+/* Uncomment jika ingin menambahkan background di body */
 /* body {
   background-image: url('../images/Background.svg');
   background-size: cover;
@@ -22,6 +23,10 @@ html, body {
   border-radius: 10px;
 }
 
+#map:hover {
+  box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.5);
+}
+
 /* Input search styling */
 #pac-input {
   width: 100%;
@@ -29,6 +34,10 @@ html, body {
   margin: 0 auto;
   position: relative;
   z-index: 1;
+}
+
+#pac-input:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
 }
 
 /* Styling untuk koordinat */
@@ -142,9 +151,18 @@ footer {
 /* Sidebar styling */
 .sidebar {
   background-color: #f8f9fa;
-  border-right: 1px solid #dee2e6;
+  border: 1px solid #dee2e6;
   padding-top: 20px;
-  margin-right: 20px;
+  margin: 0.8% 20% 37% 10px;
+  height: auto;
+  border-radius: 20px;
+  box-sizing: border-box;
+  position: fixed;
+  height: 85%;
+}
+
+.sidebar:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
 }
 
 /* Main content styling */
@@ -157,6 +175,13 @@ footer {
 .header {
   width: 100%;
   background-color: #125C78;
+  /*Revisi: sticky header*/
+  display: flex;
+  flex-direction: row-reverse;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  /*akhir revisi*/
 }
 
 /* Main section layout */
@@ -168,4 +193,13 @@ footer {
 
 #SelectBand {
   display: none;
+}
+
+/* Image hasil download sentinel2 */
+#map-image{
+  border-radius: 3%;
+}
+
+#map-image:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
 }

@@ -1,4 +1,4 @@
 {
-    "ENDPOINTDOWNLOAD": "http://192.168.56.1:5000/downloadTif",
-    "ENDPOINTCONVERT" : "http://192.168.56.1:5000/convertTif"
+    "ENDPOINTDOWNLOAD": "http://34.87.117.127:5000/downloadTif",
+    "ENDPOINTCONVERT" : "http://34.87.117.127:5000/convertTif"
 }
