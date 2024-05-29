@@ -1,3 +1,4 @@
+// createInputFields()
 (async g => {
   var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window;
   b = b[c] || (b[c] = {});
@@ -174,17 +175,21 @@ function createInputFields() {
 const convertButtonContainer = document.getElementById('convertButtonContainer');
 convertButtonContainer.innerHTML = ''; // Clear previous button if any
 
+const arrowIcon = '<i class="bi bi-arrow-repeat"></i>';
+
 const convertBtn = document.createElement('button');
 convertBtn.id = 'convertBtn';
 convertBtn.classList.add('btn', 'btn-primary', 'my-2');
-convertBtn.innerHTML = '<span id="convertText">Convert</span><span id="convertSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>';
+convertBtn.innerHTML = '<span id="convertText">Convert</span><span id="convertSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> <i class="bi bi-arrow-repeat" id="convertIcon"></i>';
 
 convertBtn.addEventListener('click', async () => {
   const convertText = document.getElementById('convertText');
   const convertSpinner = document.getElementById('convertSpinner');
+  const convertIcon =  document.getElementById('convertIcon');
 
   convertBtn.disabled = true;
   convertText.textContent = "Loading...";
+  convertIcon.style.display = "none";
   convertSpinner.style.display = "inline-block"; 
 
   const selectedValues = [];
@@ -198,6 +203,7 @@ convertBtn.addEventListener('click', async () => {
   // Reset button
   convertText.textContent = "Convert";
   convertSpinner.style.display = "none";
+  convertIcon.style.display = "inline-block";
   convertBtn.disabled = false;
 });
 
