@@ -2,58 +2,45 @@ html, body {
   height: 100%;
   margin: 0;
   display: flex;
-  flex-direction: column; 
-
+  flex-direction: column;
 }
-
-/* body {
-  background-image: url('../images/Background.svg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-} */
 
 /* Styling untuk map */
 #map {
   height: 500px;
-  width-max: 60%;
-  /*Biar posisinya walau layarnya kecik dia ga nyentuh side bar*/
-  margin: 0px 10px 0 260px;
-  display: flex;
+  width: 60%;
+  margin: 0 auto 0 250px; /* Agar tidak bertabrakan dengan sidebar */
+  margin-top: 10px;
   border-radius: 10px;
-  position: absolute;
-  /*Akhir revisi*/
 }
-
-/*Rev card for map interaktif*/
 #map:hover {
   box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.5);
 }
-/*Akhir revisi*/
 
 /* Input search styling */
 #pac-input {
-  /*max-width: 600px;*/
-  /*margin: 0 auto;*/
-  position: abosolute;
-  margin: 10px 20px 5px 260px;
-  /*margin-rignt: 10%;
-  margin-top: 10px;*/
-  border-radius: 10px;
-  z-index: 1;
   width: 60%;
+  max-width: 600px;
+  margin: 0 auto 0 250px;
+  position: relative;
 }
 
-/*Rev input interaktif*/
 #pac-input:hover {
   box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
 }
-/*Akhir revisi*/
 
 /* Styling untuk koordinat */
 .coordinates {
   text-align: center;
-  margin-top: 25px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  width: max-content;
+  background-color: #fff;
+  margin-top: 20px;
 }
 
 .coordinates span {
@@ -143,7 +130,6 @@ html, body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-bottom: 30px; /*menambahkan jarak search bar dan map*/
 }
 
 /* Main content layout */
@@ -157,23 +143,34 @@ footer {
   flex-shrink: 0;
   width: 100%;
   position: relative;
+  /* Revisi: footer */
+  z-index: 6;
 }
+
+footer .p-3 {
+  margin: 0px;
+  background: #125C78;
+  font-size: 0.8em; /* Mengecilkan ukuran teks */
+  text-align: center;
+}
+/* Akhir revisi */
 
 /* Sidebar styling */
 .sidebar {
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
   padding-top: 20px;
-  /*Menambah aturan side-bar*/
   margin: 0.8% 20% 37% 10px;
   height: auto;
   border-radius: 20px;
   box-sizing: border-box;
   position: fixed;
-  height: 90%;
-  z-index:-1;
-  cursor: -webkit-grab;
-  /*akhir revisi*/
+  height: 85%;
+  z-index: 5; /* revisi agar ada di depan konten lain */
+}
+
+.sidebar:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
 }
 
 /* Main content styling */
@@ -186,13 +183,13 @@ footer {
 .header {
   width: 100%;
   background-color: #125C78;
-  /*Revisi: sticky header*/
+  /* Revisi: sticky header */
   display: flex;
   flex-direction: row-reverse;
   position: sticky;
   top: 0;
-  z-index: 1000;
-  /*akhir revisi*/
+  z-index: 6;
+  /* akhir revisi */
 }
 
 /* Main section layout */
@@ -202,3 +199,132 @@ footer {
   flex-direction: row;
 }
 
+#SelectBand {
+  display: none;
+}
+
+/* Image hasil download sentinel2 */
+#map-image {
+  border-radius: 3%;
+}
+
+#map-image:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
+}
+
+/* tambahan animasi home dan link */
+.nav-link {
+  position: relative;
+  display: inline-block;
+  color: #fff; /* Warna teks link */
+  text-decoration: none;
+  transition: color 0.3s ease; /* Tambahan transisi untuk perubahan warna teks */
+}
+
+.nav-link::after,
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  display: block;
+  margin-top: 5px;
+  right: 0;
+  background: #fff; /* Warna garis bawah */
+  transition: width 0.3s ease, right 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active:hover {
+  color: #86B6F6; /* Warna teks saat di-hover */
+}
+
+.nav-link:hover::after,
+.nav-link.active:hover::after {
+  width: 100%;
+  right: 0;
+}
+
+.nav-link.active {
+  color: #000;
+}
+
+/* CSS untuk mengatur lebar offcanvas */
+.offcanvas-end {
+  width: 240px !important;
+}
+#sendBtn {
+  background-color: #00B3DB;
+  color: white; /* Warna asli teks tombol */
+  transition: background-color 0.3s ease; /* Transisi perubahan warna latar belakang */
+  border: none; /* Menghilangkan border */
+}
+
+#sendBtn:hover {
+  background-color: #3b3e40 !important;
+  color: #00B3DB;
+}
+
+/* Responsive adjustments */
+@media (max-width: 864px) {
+  /* Adjust layout for tablets */
+  .main {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin: 0;
+    border-radius: 0;
+    order: -1; /* Move sidebar to the top */
+  }
+  #map {
+    width: 90%;
+    height: 300px;
+    margin: 20px auto;
+  }
+  #pac-input {
+    width: 90%;
+    margin: 10px auto;
+  }
+  .coordinates {
+    margin-top: 10px;
+  }
+  
+}
+
+@media (max-width: 480px) {
+  /* Adjust layout for phones */
+  .main {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin: 0;
+    border-radius: 0;
+    order: -1; /* Move sidebar to the top */
+  }
+  #map {
+    width: 90%;
+    height: 200px;
+    margin: 20px auto;
+  }
+  #pac-input {
+    width: 90%;
+    margin: 10px auto;
+  }
+  .coordinates {
+    margin-top: 10px;
+  }
+  .main-content {
+    flex-direction: column;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+}
+/*Akhir revisi*/
