@@ -15,7 +15,7 @@ html, body {
   flex-direction: row-reverse;
   position: sticky;
   top: 0;
-  z-index: 6;
+  z-index: 1;
 }
 
 /* Styling content */
@@ -46,10 +46,11 @@ html, body {
 #map {
   height: 500px;
   width: 50%;
-  margin: 10px auto;
   border-radius: 10px;
   display: block;
+  margin: 10px auto;
 }
+
 #map:hover {
   box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.5);
 }
@@ -58,11 +59,25 @@ html, body {
 #map-image{
   border-radius: 3%;
   display: none; 
-  max-width: 20%; 
+  max-width: 15%; 
   height: auto;
+  margin: 5px;
 }
 
 #map-image:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
+}
+
+/* Styling image hasil mask dari sentinel-2 */
+#mask-image{
+  border-radius: 3%;
+  display: none; 
+  max-width: 15%; 
+  height: auto;
+  margin: 5px;
+}
+
+#mask-image:hover {
   box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
 }
 
@@ -148,13 +163,15 @@ html, body {
 
 .offcanvas-end {
   width: 240px !important;
+  background-color: #125C78; 
+  color: white;
 }
 
 /* Styling modal image hasil download dari sentinel-2 */
 .modal {
   display: none;
   position: fixed;
-  z-index: 7;
+  z-index: 3;
   padding-top: 100px;
   left: 0;
   top: 0;
@@ -229,7 +246,7 @@ html, body {
 
 /* Styling tombol send */
 #sendBtn{
-  background-color:#00B3DB;
+  background-color:#0d6efd;
   color: white;
 }
 
@@ -243,13 +260,16 @@ html, body {
   display: none;
 }
 
+#convertBtn:hover {
+  background-color: #125C78;
+  color: white;
+}
+
 /* Styling footer */
 footer {
   flex-shrink: 0;
   width: 100%;
-  position: relative;
-  /* Revisi: footer */
-  z-index: 6;
+  color: white;
 }
 
 footer .p-3 {
@@ -257,6 +277,7 @@ footer .p-3 {
   background: #125C78;
   font-size: 0.8em; 
   text-align: center;
+  z-index: 1;
 }
 
 /* Responsive adjustments */
@@ -319,6 +340,19 @@ footer .p-3 {
   .content {
     display: flex;
     flex-direction: column;
+  }
+  #map-image{
+    border-radius: 3%;
+    display: none; 
+    max-width: 45%; 
+    height: auto;
+  }
+
+  #mask-image{
+    border-radius: 3%;
+    display: none; 
+    max-width: 45%; 
+    height: auto;
   }
 }
 

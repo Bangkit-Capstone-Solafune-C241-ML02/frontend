@@ -12,6 +12,7 @@
 </head>
 <body>
   <div class="content">
+
     <!-- Navbar -->
     <nav class="navbar navbar-dark header">
       <div class="container-fluid">
@@ -21,7 +22,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="background-color: #125C78; color: white;">
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Sentinel Vision</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -90,19 +91,27 @@
         <!-- Image -->
         <div class="image-center">
           <img id="map-image"/>
+          <img id="mask-image"/>
         </div>
 
-        <!-- Modal -->
-        <div id="myModal" class="modal">
+        <!-- Modal Sentinel 2-->
+        <div id="modalSentinel" class="modal image-model">
           <span class="close">&times;</span>
           <img class="modal-content" id="img01">
+          <div id="caption"></div>
+        </div>
+
+        <!-- Modal Mask-->
+        <div id="modalMask" class="modal image-model">
+          <span class="close">&times;</span>
+          <img class="modal-content" id="img02">
           <div id="caption"></div>
         </div>
       </div>
     </div>
 
     <!-- Footer -->
-    <footer class="text-center text-white">
+    <footer class="text-center">
       <div class="text-center p-3">
         © 2024 Copyright
       </div>

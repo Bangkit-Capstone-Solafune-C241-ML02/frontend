@@ -161,12 +161,21 @@ function createInputFields() {
     select.classList.add('form-select', 'my-2');
     select.id = `dropdownField${i}`;
 
-    bandOptions.forEach(optionText => {
+    bandOptions.forEach((optionText, index) => {
       const option = document.createElement('option');
-      option.value = optionText;
+      option.value = index + 1; // Set value as 1-based index
       option.textContent = optionText;
       select.appendChild(option);
     });
+
+    // Set the default value for the first and second dropdowns
+    if (i === 1) {
+      select.value = 1; // B1 (Aerosols)
+    } else if (i === 2) {
+      select.value = 2; // B2 (Blue)
+    } else if (i === 3) {
+      select.value = 3; // B8 (NIR)
+    } 
 
     container.appendChild(select);
   }
@@ -174,8 +183,6 @@ function createInputFields() {
 // Create Convert Button
 const convertButtonContainer = document.getElementById('convertButtonContainer');
 convertButtonContainer.innerHTML = ''; // Clear previous button if any
-
-const arrowIcon = '<i class="bi bi-arrow-repeat"></i>';
 
 const convertBtn = document.createElement('button');
 convertBtn.id = 'convertBtn';
@@ -230,6 +237,7 @@ function mapDropdownValues(values) {
   return values.map(value => mapping[value]);
 }
 
+// Fungsi untuk mengirim nilai dropdown ke server
 async function sendDropdownValues(values) {
   const config = await loadConfig();
   const endpoint = config.ENDPOINTCONVERT;
@@ -277,7 +285,7 @@ function updateMapPosition(lat, lng) {
     position: newLatLng,
     content: JSON.stringify({ lat, lng }, null, 2)
   });
-  infoWindow.open(map);
+  // infoWindow.open(map);
 
   document.getElementById("lat").textContent = "Latitude: " + lat;
   document.getElementById("lng").textContent = "Longitude: " + lng;
@@ -314,6 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// Fungsi untuk mengirim koordinat ke server
 async function sendCoordinates(lat, lng) {
   const config = await loadConfig();
   const endpoint = config.ENDPOINTDOWNLOAD;
@@ -338,6 +347,10 @@ async function sendCoordinates(lat, lng) {
       imgElement.src = imgUrl;
       imgElement.style.display = 'block';
 
+      const imgElementMask = document.getElementById('mask-image');
+      imgElementMask.src = imgUrl;
+      imgElementMask.style.display = 'block'
+
   } catch (error) {
       console.error('Error sending coordinates:', error);
   }
@@ -350,20 +363,27 @@ async function loadConfig() {
   return config;
 }
 
-// Modal image preview
-var modal = document.getElementById("myModal");
-var img = document.getElementById("map-image");
-var modalImg = document.getElementById("img01");
-var captionText = document.getElementById("caption");
-img.onclick = function(){
-  modal.style.display = "block";
-  modalImg.src = this.src;
-  captionText.innerHTML = this.alt;
+// Fungsi untuk menampilkan modal
+function setupModal(imageId, modalId, modalImgId, captionId) {
+  var modal = document.getElementById(modalId);
+  var img = document.getElementById(imageId);
+  var modalImg = document.getElementById(modalImgId);
+  var captionText = document.getElementById(captionId);
+
+  img.onclick = function(){
+    modal.style.display = "block";
+    modalImg.src = this.src;
+    captionText.innerHTML = this.alt;
+  }
+
+  var span = modal.getElementsByClassName("close")[0];
+  span.onclick = function() { 
+    modal.style.display = "none";
+  }
 }
 
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function() { 
-  modal.style.display = "none";
-}
+setupModal("map-image", "modalSentinel", "img01", "caption");
+setupModal("mask-image", "modalMask", "img02", "caption");
+
 
 initMap();
