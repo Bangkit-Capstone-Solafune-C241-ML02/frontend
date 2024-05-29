@@ -161,21 +161,12 @@ function createInputFields() {
     select.classList.add('form-select', 'my-2');
     select.id = `dropdownField${i}`;
 
-    bandOptions.forEach((optionText, index) => {
+    bandOptions.forEach(optionText => {
       const option = document.createElement('option');
-      option.value = index + 1; // Set value as 1-based index
+      option.value = optionText;
       option.textContent = optionText;
       select.appendChild(option);
     });
-
-    // Set the default value for the first and second dropdowns
-    if (i === 1) {
-      select.value = 1; // B1 (Aerosols)
-    } else if (i === 2) {
-      select.value = 2; // B2 (Blue)
-    } else if (i === 3) {
-      select.value = 3; // B8 (NIR)
-    } 
 
     container.appendChild(select);
   }
