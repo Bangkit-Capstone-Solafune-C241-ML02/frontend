@@ -1,13 +1,13 @@
 {
   "items": [
     { "id": "item1", "lat": 34.935555436135516, "lng": -118.33338988377007, "text": "Solar Star" },
-    { "id": "item2", "lat": 35.5556242248143, "lng": -115.47186204543699, "text": "Ivanpah Solar" },
-    { "id": "item3", "lat": 38.23769398500438, "lng": -117.36345902398234, "text": "Crescent D Solar" },
+    { "id": "item2", "lat": 31.650833, "lng": 130.841944, "text": "Solar photovoltaic" },
+    { "id": "item3", "lat": 36.437824, "lng": 139.575864, "text": "Sano, Tochigi" },
     { "id": "item4", "lat": 41.72579520919084, "lng": 22.15401670344236, "text": "Photovoltaic E D S" },
     { "id": "item5", "lat": 34.63515860479466, "lng": 134.1531408326481, "text": "Setouchi K M Solar" },
-    { "id": "item6", "lat": 42.71652826630978, "lng": 141.79610730106506, "text": "SoftBank T A Solar" },
-    { "id": "item7", "lat": 52.29175158453118, "lng": 0.31650149921015114, "text": "Solar Farms" },
-    { "id": "item8", "lat": -18.892467093732616, "lng": 144.14291278169748, "text": "Kidston Solar" },
+    { "id": "item6", "lat": 34.714444, "lng": 137.268611, "text": "Tahara Solar Wind" },
+    { "id": "item7", "lat": 32.933957, "lng": 129.708226, "text": "Osetocho" },
+    { "id": "item8", "lat": 33.849045, "lng": 136.059177, "text": "Minamimuro District" },
     { "id": "item9", "lat": -28.31341216977502, "lng": 23.365974656698977, "text": "Jasper Solar" },
     { "id": "item10", "lat": 1.656000374049244, "lng": 125.09363323009345, "text": "PLTS Likupang" }
   ]

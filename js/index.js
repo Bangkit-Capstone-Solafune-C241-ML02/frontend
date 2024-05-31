@@ -93,7 +93,7 @@ async function initMap() {
     infoWindow.setContent(
       JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
     );
-    infoWindow.open(map);
+    // infoWindow.open(map);
 
     const latLng = mapsMouseEvent.latLng.toJSON();
     document.getElementById("lat").textContent = "Latitude: " + latLng.lat;
@@ -215,7 +215,7 @@ function createInputFields() {
 
 async function sendDropdownValues(values) {
   const config = await loadConfig();
-  const endpoint = config.ENDPOINTCONVERT;
+  const endpoint = `${config.BASE_URL}${config.ENDPOINTS.CONVERT_SENTINEL}`;
 
   try {
     const response = await fetch(endpoint, {
@@ -320,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Fungsi untuk mengirim koordinat ke server
 async function sendCoordinates(lat, lng) {
   const config = await loadConfig();
-  const endpoint = config.ENDPOINTDOWNLOAD;
+  const endpoint = `${config.BASE_URL}${config.ENDPOINTS.DOWNLOAD}`;
 
   try {
       const response = await fetch(endpoint, {

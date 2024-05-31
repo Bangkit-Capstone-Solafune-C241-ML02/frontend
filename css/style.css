@@ -59,7 +59,7 @@ html, body {
 #map-image{
   border-radius: 3%;
   display: none; 
-  max-width: 15%; 
+  max-width: 20%; 
   height: auto;
   margin: 5px;
 }
@@ -72,7 +72,7 @@ html, body {
 #mask-image{
   border-radius: 3%;
   display: none; 
-  max-width: 15%; 
+  max-width: 20%; 
   height: auto;
   margin: 5px;
 }
@@ -85,7 +85,7 @@ html, body {
 #upload-image{
   border-radius: 3%;
   display: none; 
-  max-width: 15%; 
+  max-width: 20%; 
   height: auto;
   margin: 5px;
 }
@@ -93,6 +93,7 @@ html, body {
 #upload-image:hover {
   box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
 }
+
 
 .image-center {
   margin-top: 20px;
@@ -273,10 +274,29 @@ html, body {
   display: none;
 }
 
+/* Styling tombol convert */
 #convertBtn:hover {
   background-color: #125C78;
   color: white;
 }
+
+/* Styling tombol upload */
+#uploadBtn{
+  background-color:#0d6efd;
+  color: white;
+
+}
+
+#uploadBtn:hover {
+  background-color: #125C78;
+  color: white;
+}
+
+/* Styling animasi loading tombol upload */
+#uploadSpinner {
+  display: none;
+}
+
 
 /* Styling footer */
 footer {
@@ -367,6 +387,15 @@ footer .p-3 {
     max-width: 45%; 
     height: auto;
   }
+
+  #upload-image{
+    border-radius: 3%;
+    display: none; 
+    max-width: 45%; 
+    height: auto;
+  }
+
+
 }
 
 /* Image styling */
