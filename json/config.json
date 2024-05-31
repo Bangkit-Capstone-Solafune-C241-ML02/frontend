@@ -1,4 +1,9 @@
 {
-    "ENDPOINTDOWNLOAD": "http://192.168.56.1:5000/downloadTif",
-    "ENDPOINTCONVERT" : "http://192.168.56.1:5000/convertTif"
+    "BASE_URL": "http://34.87.117.127:5000",
+    "ENDPOINTS": {
+        "DOWNLOAD": "/downloadTif",
+        "CONVERT_SENTINEL": "/convertTifSentinel",
+        "CONVERT_UPLOAD": "/convertTifUpload",
+        "UPLOAD": "/uploadTif"
+    }
 }

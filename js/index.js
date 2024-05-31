@@ -1,3 +1,4 @@
+// createInputFields()
 (async g => {
   var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window;
   b = b[c] || (b[c] = {});
@@ -92,7 +93,7 @@ async function initMap() {
     infoWindow.setContent(
       JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
     );
-    infoWindow.open(map);
+    // infoWindow.open(map);
 
     const latLng = mapsMouseEvent.latLng.toJSON();
     document.getElementById("lat").textContent = "Latitude: " + latLng.lat;
@@ -155,6 +156,8 @@ function createInputFields() {
     'B12 (SWIR 2)',
   ];
 
+  const defaultValues = ['B1 (Aerosols)', 'B2 (Blue)', 'B3 (Green)'];
+
   for (let i = 1; i <= 3; i++) {
     const select = document.createElement('select');
     select.classList.add('form-select', 'my-2');
@@ -164,70 +167,56 @@ function createInputFields() {
       const option = document.createElement('option');
       option.value = optionText;
       option.textContent = optionText;
+      if (optionText === defaultValues[i - 1]) {
+        option.selected = true;
+      }
       select.appendChild(option);
     });
 
     container.appendChild(select);
   }
 
-// Create Convert Button
-const convertButtonContainer = document.getElementById('convertButtonContainer');
-convertButtonContainer.innerHTML = ''; // Clear previous button if any
+  // Create Convert Button
+  const convertButtonContainer = document.getElementById('convertButtonContainer');
+  convertButtonContainer.innerHTML = ''; // Clear previous button if any
 
-const convertBtn = document.createElement('button');
-convertBtn.id = 'convertBtn';
-convertBtn.classList.add('btn', 'btn-primary', 'my-2');
-convertBtn.innerHTML = '<span id="convertText">Convert</span><span id="convertSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>';
+  const convertBtn = document.createElement('button');
+  convertBtn.id = 'convertBtn';
+  convertBtn.classList.add('btn', 'btn-primary', 'my-2');
+  convertBtn.innerHTML = '<span id="convertText">Convert</span><span id="convertSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> <i class="bi bi-arrow-repeat" id="convertIcon"></i>';
 
-convertBtn.addEventListener('click', async () => {
-  const convertText = document.getElementById('convertText');
-  const convertSpinner = document.getElementById('convertSpinner');
+  convertBtn.addEventListener('click', async () => {
+    const convertText = document.getElementById('convertText');
+    const convertSpinner = document.getElementById('convertSpinner');
+    const convertIcon = document.getElementById('convertIcon');
 
-  convertBtn.disabled = true;
-  convertText.textContent = "Loading...";
-  convertSpinner.style.display = "inline-block"; 
+    convertBtn.disabled = true;
+    convertText.textContent = "Loading...";
+    convertIcon.style.display = "none";
+    convertSpinner.style.display = "inline-block";
 
-  const selectedValues = [];
-  for (let i = 1; i <= 3; i++) {
-    const dropdown = document.getElementById(`dropdownField${i}`);
-    selectedValues.push(dropdown.value);
-  }
+    const selectedValues = [];
+    for (let i = 1; i <= 3; i++) {
+      const dropdown = document.getElementById(`dropdownField${i}`);
+      selectedValues.push(dropdown.value);
+    }
 
-  await sendDropdownValues(mapDropdownValues(selectedValues));
+    await sendDropdownValues(mapDropdownValues(selectedValues));
 
-  // Reset button
-  convertText.textContent = "Convert";
-  convertSpinner.style.display = "none";
-  convertBtn.disabled = false;
-});
+    // Reset button
+    convertText.textContent = "Convert";
+    convertSpinner.style.display = "none";
+    convertIcon.style.display = "inline-block";
+    convertBtn.disabled = false;
+  });
 
-convertButtonContainer.appendChild(convertBtn);
-
-}
-
-function mapDropdownValues(values) {
-  const mapping = {
-    'B1 (Aerosols)': 1,
-    'B2 (Blue)': 2,
-    'B3 (Green)': 3,
-    'B4 (Red)': 4,
-    'B5 (Red Edge 1)': 5,
-    'B6 (Red Edge 2)': 6,
-    'B7 (Red Edge 3)': 7,
-    'B8 (NIR)': 8,
-    'B8A (Red Edge 4)': 9,
-    'B9 (Water vapor)': 10,
-    'B11 (SWIR 1)': 11,
-    'B12 (SWIR 2)': 12
-  };
-
-  return values.map(value => mapping[value]);
+  convertButtonContainer.appendChild(convertBtn);
 }
 
 async function sendDropdownValues(values) {
   const config = await loadConfig();
-  const endpoint = config.ENDPOINTCONVERT;
-  
+  const endpoint = `${config.BASE_URL}${config.ENDPOINTS.CONVERT_SENTINEL}`;
+
   try {
     const response = await fetch(endpoint, {
       method: 'POST',
@@ -252,6 +241,26 @@ async function sendDropdownValues(values) {
   }
 }
 
+
+function mapDropdownValues(values) {
+  const mapping = {
+    'B1 (Aerosols)': 1,
+    'B2 (Blue)': 2,
+    'B3 (Green)': 3,
+    'B4 (Red)': 4,
+    'B5 (Red Edge 1)': 5,
+    'B6 (Red Edge 2)': 6,
+    'B7 (Red Edge 3)': 7,
+    'B8 (NIR)': 8,
+    'B8A (Red Edge 4)': 9,
+    'B9 (Water vapor)': 10,
+    'B11 (SWIR 1)': 11,
+    'B12 (SWIR 2)': 12
+  };
+
+  return values.map(value => mapping[value]);
+}
+
 // Fungsi umum untuk mengubah posisi peta
 function updateMapPosition(lat, lng) {
   const newLatLng = new google.maps.LatLng(lat, lng);
@@ -271,7 +280,7 @@ function updateMapPosition(lat, lng) {
     position: newLatLng,
     content: JSON.stringify({ lat, lng }, null, 2)
   });
-  infoWindow.open(map);
+  // infoWindow.open(map);
 
   document.getElementById("lat").textContent = "Latitude: " + lat;
   document.getElementById("lng").textContent = "Longitude: " + lng;
@@ -308,9 +317,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// Fungsi untuk mengirim koordinat ke server
 async function sendCoordinates(lat, lng) {
   const config = await loadConfig();
-  const endpoint = config.ENDPOINTDOWNLOAD;
+  const endpoint = `${config.BASE_URL}${config.ENDPOINTS.DOWNLOAD}`;
 
   try {
       const response = await fetch(endpoint, {
@@ -332,6 +342,10 @@ async function sendCoordinates(lat, lng) {
       imgElement.src = imgUrl;
       imgElement.style.display = 'block';
 
+      const imgElementMask = document.getElementById('mask-image');
+      imgElementMask.src = imgUrl;
+      imgElementMask.style.display = 'block'
+
   } catch (error) {
       console.error('Error sending coordinates:', error);
   }
@@ -344,20 +358,27 @@ async function loadConfig() {
   return config;
 }
 
-// Modal image preview
-var modal = document.getElementById("myModal");
-var img = document.getElementById("map-image");
-var modalImg = document.getElementById("img01");
-var captionText = document.getElementById("caption");
-img.onclick = function(){
-  modal.style.display = "block";
-  modalImg.src = this.src;
-  captionText.innerHTML = this.alt;
+// Fungsi untuk menampilkan modal
+function setupModal(imageId, modalId, modalImgId, captionId) {
+  var modal = document.getElementById(modalId);
+  var img = document.getElementById(imageId);
+  var modalImg = document.getElementById(modalImgId);
+  var captionText = document.getElementById(captionId);
+
+  img.onclick = function(){
+    modal.style.display = "block";
+    modalImg.src = this.src;
+    captionText.innerHTML = this.alt;
+  }
+
+  var span = modal.getElementsByClassName("close")[0];
+  span.onclick = function() { 
+    modal.style.display = "none";
+  }
 }
 
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function() { 
-  modal.style.display = "none";
-}
+setupModal("map-image", "modalSentinel", "img01", "caption");
+setupModal("mask-image", "modalMask", "img02", "caption");
+
 
 initMap();

@@ -1,3 +1,4 @@
+/* Styling Body */
 html, body {
   height: 100%;
   margin: 0;
@@ -6,50 +7,93 @@ html, body {
 
 }
 
-/* body {
-  background-image: url('../images/Background.svg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-} */
-
-/* Styling untuk map */
-#map {
-  height: 500px;
-  width: 50%;
-  margin: 0 auto;
-  margin-top: 10px;
-  border-radius: 10px;
-}
-
-/* Input search styling */
-#pac-input {
+/* Styling header */
+.header {
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  position: relative;
+  background-color: #125C78;
+  display: flex;
+  flex-direction: row-reverse;
+  position: sticky;
+  top: 0;
   z-index: 1;
 }
 
-/* Styling untuk koordinat */
-.coordinates {
-  text-align: center;
-  margin-top: 20px;
+/* Styling content */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.coordinates span {
+/* Sidebar styling */
+.sidebar {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding-top: 20px;
+  margin: 0.8% 20% 37% 10px;
+  height: auto;
+  border-radius: 20px;
+  box-sizing: border-box;
+  position: fixed;
+  height: 85%;
+}
+
+.sidebar:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
+}
+
+/* Styling google map */
+#map {
+  height: 500px;
+  width: 50%;
+  border-radius: 10px;
   display: block;
-  font-size: 1.2em;
-  margin: 5px 0;
+  margin: 10px auto;
 }
 
-/* Image styling */
-.text-center img {
-  margin-top: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 5px;
+#map:hover {
+  box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.5);
 }
+
+/* Styling image hasil download dari sentinel-2 */
+#map-image{
+  border-radius: 3%;
+  display: none; 
+  max-width: 20%; 
+  height: auto;
+  margin: 5px;
+}
+
+#map-image:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
+}
+
+/* Styling image hasil mask dari sentinel-2 */
+#mask-image{
+  border-radius: 3%;
+  display: none; 
+  max-width: 20%; 
+  height: auto;
+  margin: 5px;
+}
+
+#mask-image:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
+}
+
+/* Styling untuk image hasil upload pengguna */
+#upload-image{
+  border-radius: 3%;
+  display: none; 
+  max-width: 20%; 
+  height: auto;
+  margin: 5px;
+}
+
+#upload-image:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
+}
+
 
 .image-center {
   margin-top: 20px;
@@ -60,11 +104,88 @@ html, body {
   align-items: center;
 }
 
-/* Modal styling */
+/* Styling search box */
+#pac-input {
+  width: 80%;
+  max-width: 600px;
+  margin: 5px auto;
+  position: relative;
+  display: block;
+  text-align: center;
+}
+
+#pac-input:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
+}
+
+/* Styling text coordinate */
+.coordinates {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  width: max-content;
+  background-color: #fff;
+  margin-top: 20px;
+}
+
+.coordinates span {
+  display: block;
+  font-size: 1.2em;
+  margin: 5px 0;
+}
+
+/* Styling offcanvas */
+.nav-link {
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after,
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  display: block;
+  margin-top: 5px;
+  right: 0;
+  background: #fff;
+  transition: width 0.3s ease, right 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active:hover {
+  color: #86B6F6; 
+}
+
+.nav-link:hover::after,
+.nav-link.active:hover::after {
+  width: 100%;
+  right: 0;
+}
+
+.nav-link.active {
+  color: #000;
+}
+
+.offcanvas-end {
+  width: 240px !important;
+  background-color: #125C78; 
+  color: white;
+}
+
+/* Styling modal image hasil download dari sentinel-2 */
 .modal {
   display: none;
   position: fixed;
-  z-index: 2;
+  z-index: 3;
   padding-top: 100px;
   left: 0;
   top: 0;
@@ -82,7 +203,6 @@ html, body {
   max-width: 700px;
 }
 
-/* Add Animation */
 .modal-content, #caption {
   -webkit-animation-name: zoom;
   -webkit-animation-duration: 0.6s;
@@ -100,7 +220,6 @@ html, body {
   to {transform:scale(1)}
 }
 
-/* The Close Button */
 .close {
   position: absolute;
   top: 15px;
@@ -118,45 +237,13 @@ html, body {
   cursor: pointer;
 }
 
-/* Layout container */
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-/* Main content layout */
-.content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-footer {
-  flex-shrink: 0;
-  width: 100%;
-  position: relative;
-}
-
-/* Sidebar styling */
-.sidebar {
-  background-color: #f8f9fa;
-  border-right: 1px solid #dee2e6;
-  padding-top: 20px;
-  margin-right: 20px;
-}
 
 /* Main content styling */
 .main-content {
-  flex-grow: 1;
-  padding: 20px;
-}
-
-/* Header styling */
-.header {
-  width: 100%;
-  background-color: #125C78;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Main section layout */
@@ -166,6 +253,164 @@ footer {
   flex-direction: row;
 }
 
+/* Styling text select band */
 #SelectBand {
   display: none;
 }
+
+/* Styling tombol send */
+#sendBtn{
+  background-color:#0d6efd;
+  color: white;
+}
+
+#sendBtn:hover {
+  background-color: #125C78;
+  color: white;
+}
+
+/* Styling animasi loading tombol send */
+#sendSpinner{
+  display: none;
+}
+
+/* Styling tombol convert */
+#convertBtn:hover {
+  background-color: #125C78;
+  color: white;
+}
+
+/* Styling tombol upload */
+#uploadBtn{
+  background-color:#0d6efd;
+  color: white;
+
+}
+
+#uploadBtn:hover {
+  background-color: #125C78;
+  color: white;
+}
+
+/* Styling animasi loading tombol upload */
+#uploadSpinner {
+  display: none;
+}
+
+
+/* Styling footer */
+footer {
+  flex-shrink: 0;
+  width: 100%;
+  color: white;
+}
+
+footer .p-3 {
+  margin: 0px;
+  background: #125C78;
+  font-size: 0.8em; 
+  text-align: center;
+  z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 864px) {
+  /* Adjust layout for tablets */
+  .main {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin: 0;
+    border-radius: 0;
+    order: -1;
+  }
+  #map {
+    width: 90%;
+    height: 300px;
+    margin: 20px auto;
+  }
+  #pac-input {
+    width: 90%;
+    margin: 10px auto;
+  }
+  .coordinates {
+    margin-top: 10px;
+  }
+  
+}
+
+@media (max-width: 480px) {
+  /* Adjust layout for phones */
+  .main {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin: 0;
+    border-radius: 0;
+    order: -1;
+  }
+  #map {
+    width: 90%;
+    height: 200px;
+    margin: 20px auto;
+  }
+  #pac-input {
+    width: 90%;
+    margin: 10px auto;
+  }
+  .coordinates {
+    margin-top: 10px;
+  }
+  .main-content {
+    flex-direction: column;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  #map-image{
+    border-radius: 3%;
+    display: none; 
+    max-width: 45%; 
+    height: auto;
+  }
+
+  #mask-image{
+    border-radius: 3%;
+    display: none; 
+    max-width: 45%; 
+    height: auto;
+  }
+
+  #upload-image{
+    border-radius: 3%;
+    display: none; 
+    max-width: 45%; 
+    height: auto;
+  }
+
+
+}
+
+/* Image styling */
+/* .text-center img {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+} */
+
+/* Styling container search box */
+/* .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: red;
+} */
