@@ -81,6 +81,19 @@ html, body {
   box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
 }
 
+/* Styling untuk image hasil upload pengguna */
+#upload-image{
+  border-radius: 3%;
+  display: none; 
+  max-width: 15%; 
+  height: auto;
+  margin: 5px;
+}
+
+#upload-image:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
+}
+
 .image-center {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -355,7 +368,6 @@ footer .p-3 {
     height: auto;
   }
 }
-
 
 /* Image styling */
 /* .text-center img {
