@@ -14,6 +14,60 @@
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 </head>
 <body>
+  <!-- SVG symbols -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+    <symbol id="bookmark-star" viewBox="0 0 16 16">
+      <path d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z"/>
+      <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+    </symbol>
+    <symbol id="geo-alt" viewBox="0 0 16 16">
+      <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+    </symbol>
+    <symbol id="convert" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM1.928 12.512v3.337h-.794v-3.337H0v-.662h3.064v.662zm2.131-.662v3.999h-.79V11.85zm1.373 3.999v-1.59h1.606v-.64H5.432v-1.116H7.19v-.653H4.641v3.999zm2.868-1.59v1.59h-.791V11.85h2.548v.653H8.3v1.117h1.605v.638z"/>
+    </symbol>
+  </svg>
+
+  <!-- Modal Opening-->
+  <div class="modal fade" id="modalOpening" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel">What's new</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-unstyled">
+            <li class="d-flex gap-4">
+              <svg class="text-body-secondary flex-shrink-0" width="48" height="48" style="fill: #AEB2B6;"><use xlink:href="#geo-alt"/></svg>
+              <div>
+                <h5 class="mb-0">Google Maps</h5>
+                <p>Choose the desired location yourself.</p>
+              </div>
+            </li>
+            <li class="d-flex gap-4">
+              <svg class="bi text-warning flex-shrink-0" width="48" height="48"><use xlink:href="#bookmark-star"/></svg>
+              <div>
+                <h5 class="mb-0">Recommendation Location</h5>
+                <p>Find several preferred locations.</p>
+              </div>
+            </li>
+            <li class="d-flex gap-4">
+              <svg class="bi text-primary flex-shrink-0" width="48" height="48"><use xlink:href="#convert"/></svg>
+              <div>
+                <h5 class="mb-0">Custom Convert</h5>
+                <p>Change the image as you wish.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Great, thanks!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="content">
 
     <!-- Navbar -->
@@ -40,6 +94,9 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="upload.html">Detect From Images</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
               </li>
             </ul>
           </div>

@@ -51,58 +51,9 @@
     </nav>
 
     <div class="main">
-      
-      <!-- Sidebar -->
-      <div class="sidebar bg-light p-3">
-
-        <!-- Dynamic Input Fields -->
-        <h4 class="mt-3" id="SelectBand">Select Band 
-          <i class="bi bi-layers"></i>
-        </h4>
-        <div id="dynamicFields" class="mt-3"></div>
-        <!-- Convert Button Placeholder -->
-        <div id="convertButtonContainer" class="mt-2"></div>
-
-      </div>
-
         <!-- Main Content -->
         <div class="main-content flex-grow-1">
-        
-        <div class="container">
-            <h3 class="mt-1">Upload .tif File</h3>
-            <form id="uploadForm" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="tifFile" class="form-label">Choose .tif file</label>
-                <input class="form-control" type="file" id="tifFile" accept=".tif" required>
-            </div>
-            <button id="uploadBtn" class="btn">
-              <i class="bi bi-upload"></i>
-              <span id="uploadText">Upload</span>
-              <span class="spinner-border spinner-border-sm" id="uploadSpinner" role="status" aria-hidden="true"></span>
-            </button>
-            </form>
-        </div>
-
-        <!-- Image -->
-        <div class="image-center">
-            <img id="upload-image"/>
-            <img id="mask-image"/>
-        </div>
-
-        <!-- Modal Upload-->
-        <div id="modalUpload" class="modal image-model">
-            <span class="close">&times;</span>
-            <img class="modal-content" id="img01">
-            <div id="caption"></div>
-        </div>
-
-        <!-- Modal Mask-->
-        <div id="modalMask" class="modal image-model">
-          <span class="close">&times;</span>
-          <img class="modal-content" id="img02">
-          <div id="caption"></div>
-        </div>
-
+            <div class="container"></div>
         </div>
     </div>
 

@@ -7,6 +7,32 @@ html, body {
 
 }
 
+/* Styling modal opening */
+.modal-backdrop {
+  z-index: 1040 !important;
+}
+
+.modal {
+  z-index: 1050 !important;
+}
+.modal-content {
+  background-color: #212529;
+  color: #fff;
+}
+
+.modal-header, .modal-footer {
+  border-color: #212529;
+}
+
+.bi {
+  vertical-align: -.125em;
+  fill: currentColor;
+}
+
+.btn-close {
+  filter: invert(1); /* Invert close button color */
+}
+
 /* Styling header */
 .header {
   width: 100%;

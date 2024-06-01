@@ -377,6 +377,21 @@ function setupModal(imageId, modalId, modalImgId, captionId) {
   }
 }
 
+// Fungsi untuk menampilkan modal opening
+document.addEventListener('DOMContentLoaded', () => {
+  const modalOpening = new bootstrap.Modal(document.getElementById('modalOpening'));
+
+  // Always show the modal
+  modalOpening.show();
+
+  // Close the modal
+  document.querySelector('[data-bs-dismiss="modal"]').addEventListener('click', () => {
+      modalOpening.hide();
+  });
+});
+
+
+
 setupModal("map-image", "modalSentinel", "img01", "caption");
 setupModal("mask-image", "modalMask", "img02", "caption");
 
