@@ -159,62 +159,74 @@ function setupModal(imageId, modalId, modalImgId, captionId) {
 }
   
 // Fungsi untuk mengirim file .tif
+document.getElementById('tifFile').addEventListener('change', function () {
+    const file = this.files[0];
+    const uploadBtn = document.getElementById('uploadBtn');
+    const fileError = document.getElementById('fileError');
+
+    if (file && (file.type === 'image/tiff' || file.name.endsWith('.tif') || file.name.endsWith('.tiff')) && file.size <= 5 * 1024 * 1024) {
+        uploadBtn.disabled = false;
+        fileError.style.display = 'none';
+    } else {
+        uploadBtn.disabled = true;
+        fileError.style.display = 'block';
+    }
+});
+
 async function handleUpload(event) {
     event.preventDefault();
     const formData = new FormData();
     const fileField = document.getElementById('tifFile');
-  
+
+    if (!fileField.files[0]) {
+        alert('Please select a file to upload.');
+        return;
+    }
+
     formData.append('tifFile', fileField.files[0]);
     const config = await loadConfig();
-    const endpoint = `${config.BASE_URL}${config.ENDPOINTS.UPLOAD}`; // Placeholder endpoint
+    const endpoint = `${config.BASE_URL}${config.ENDPOINTS.UPLOAD}`;
 
     const uploadBtn = document.getElementById('uploadBtn');
     const uploadText = document.getElementById('uploadText');
     const uploadSpinner = document.getElementById('uploadSpinner');
-    
+
     uploadBtn.disabled = true;
     uploadText.textContent = "Loading...";
     uploadSpinner.style.display = "inline-block";
-  
+
     try {
         const response = await fetch(endpoint, {
             method: 'POST',
             body: formData
         });
-  
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
 
-        // Menampilkan gambar dalam modal
-        setupModal("upload-image", "modalUpload", "img01", "caption");
-        setupModal("mask-image", "modalMask", "img02", "caption");
-  
         const blob = await response.blob();
         const imgUrl = URL.createObjectURL(blob);
-  
+
         const imgElement = document.getElementById('upload-image');
         imgElement.src = imgUrl;
         imgElement.style.display = 'block';
 
         const imgElementMask = document.getElementById('mask-image');
         imgElementMask.src = imgUrl;
-        imgElementMask.style.display = 'block'
-  
+        imgElementMask.style.display = 'block';
 
-        // Mengatur ulang field upload
         fileField.value = '';
 
         const convertBtn = document.getElementById('convertBtn');
         convertBtn.disabled = false;
 
-        // Reset button
-        uploadText.textContent = "upload";
+        uploadText.textContent = "Upload";
         uploadSpinner.style.display = "none";
         uploadBtn.disabled = false;
     } catch (error) {
         console.error('Error:', error);
     }
 }
-  
+
 document.getElementById('uploadForm').addEventListener('submit', handleUpload);
