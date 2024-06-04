@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Detect From Maps</title>
-  <meta name="description" content="sentinel vision adalah sebuah platform yang memungkinan pengguna untuk melakukan deteksi dan mask terhadap solar paner">
+  <meta name="description" content="Sense-Vis adalah sebuah platform yang memungkinan pengguna untuk melakukan deteksi dan mask terhadap solar paner">
   <meta name="keywords" content="yolov5, sentinel2, mask, solar panel">
   <meta name="author" content="Abiya, Rafly, Irfani, Riyang">
   <link rel="icon" href="/images/Black.ico" type="image/x-icon">
@@ -73,7 +73,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-dark header">
       <div class="container-fluid">
-        <a class="navbar-brand">Sentinel Vision
+        <a class="navbar-brand" href="index.html">Sense-Vis
           <img src="images/White.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
@@ -81,7 +81,7 @@
         </button>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Sentinel Vision</h5>
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Sense-Vis</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
@@ -110,7 +110,7 @@
       <div class="sidebar bg-light p-3">
 
         <!-- Rekomendasi Lokasi -->
-        <h4>Recommendation </h4>
+        <h4>Recommendation</h4>
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
             Solar Panel Location
@@ -152,7 +152,7 @@
         </div>   
 
         <!-- Image -->
-        <div class="image-center">
+        <div class="image-center" id="image-container">
           <img id="map-image"/>
           <img id="mask-image"/>
         </div>
@@ -183,5 +183,6 @@
 
   <script src="/js/maps.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>

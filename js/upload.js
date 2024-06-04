@@ -224,9 +224,24 @@ async function handleUpload(event) {
         uploadText.textContent = "Upload";
         uploadSpinner.style.display = "none";
         uploadBtn.disabled = false;
+        showDiv();
+        setupModal("upload-image", "modalUpload", "img01", "caption");
+        setupModal("mask-image", "modalUpload", "img01", "caption");
     } catch (error) {
         console.error('Error:', error);
     }
 }
 
 document.getElementById('uploadForm').addEventListener('submit', handleUpload);
+
+function hideDiv() {
+    var div = document.getElementById("image-container");
+    div.style.display = "none";
+}
+
+function showDiv() {
+    var div = document.getElementById("image-container");
+    div.style.display = "flex"; // Revert to default 'block' if originalDisplayStyle is undefined
+}
+
+hideDiv();

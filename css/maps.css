@@ -128,7 +128,35 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
+  /*Tambahan style card*/
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  flex-wrap: wrap; /* Pastikan gambar bisa membungkus */
 }
+
+#map-image,
+#mask-image,
+#upload-image {
+  display: block;
+  max-width: 35%; /* Biar gambar memenuhi card */
+  height: auto;
+  margin: 10px; /* Jarak antar gambar dalam card */
+  border-radius: 3%;
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
+  transition: box-shadow 0.3s ease; /* Tambahkan transisi halus untuk efek hover */
+}
+
+#map-image:hover,
+#mask-image:hover,
+#upload-image:hover {
+  box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.5); /* Efek hover untuk gambar */
+}
+/*Akhir revisi card*/
 
 /* Styling search box */
 #pac-input {
@@ -336,7 +364,7 @@ footer .p-3 {
   background: #125C78;
   font-size: 0.8em; 
   text-align: center;
-  z-index: 1;
+  z-index: 5;
 }
 
 /* Responsive adjustments */
@@ -421,5 +449,15 @@ footer .p-3 {
     height: auto;
   }
 
-
+  .image-center {
+    width: 60%;
+    padding: 10px;
+    flex-direction: column; /* Susun gambar secara vertikal pada layar kecil */
+  }
+  #map-image,
+  #mask-image,
+  #upload-image{
+    max-width: 90%; /* Gambar memenuhi card pada layar kecil */
+    margin: 5px 0; /* Kurangi jarak antar gambar pada layar kecil */
+  }
 }

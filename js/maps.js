@@ -346,6 +346,8 @@ async function sendCoordinates(lat, lng) {
       imgElementMask.src = imgUrl;
       imgElementMask.style.display = 'block'
 
+      showDiv();
+
   } catch (error) {
       console.error('Error sending coordinates:', error);
   }
@@ -380,20 +382,34 @@ function setupModal(imageId, modalId, modalImgId, captionId) {
 // Fungsi untuk menampilkan modal opening
 document.addEventListener('DOMContentLoaded', () => {
   const modalOpening = new bootstrap.Modal(document.getElementById('modalOpening'));
+  const lastModalShownTime = localStorage.getItem('lastModalShownTime');
+  const currentTime = new Date().getTime();
 
-  // Always show the modal
-  modalOpening.show();
+  // Check if modal should be shown based on time and storage
+  if (!lastModalShownTime || currentTime - parseInt(lastModalShownTime) > 1*60*1000) {
+    modalOpening.show();
+    localStorage.setItem('lastModalShownTime', currentTime.toString());
+  }
 
   // Close the modal
   document.querySelector('[data-bs-dismiss="modal"]').addEventListener('click', () => {
-      modalOpening.hide();
+    modalOpening.hide();
   });
 });
 
 
+// Fungsi untuk menyembunyikan 
+function hideDiv() {
+    var div = document.getElementById("image-container");
+    div.style.display = "none";
+}
+
+function showDiv() {
+    var div = document.getElementById("image-container");
+    div.style.display = "flex"; // Revert to default 'block' if originalDisplayStyle is undefined
+}
 
 setupModal("map-image", "modalSentinel", "img01", "caption");
 setupModal("mask-image", "modalMask", "img02", "caption");
-
-
+hideDiv();
 initMap();

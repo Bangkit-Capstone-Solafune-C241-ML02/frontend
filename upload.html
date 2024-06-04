@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Detect From Images</title>
-  <meta name="description" content="sentinel vision adalah sebuah platform yang memungkinan pengguna untuk melakukan deteksi dan mask terhadap solar paner">
+  <meta name="description" content="Sense-Vis adalah sebuah platform yang memungkinan pengguna untuk melakukan deteksi dan mask terhadap solar paner">
   <meta name="keywords" content="yolov5, sentinel2, mask, solar panel">
   <meta name="author" content="Abiya, Rafly, Irfani, Riyang">
   <link rel="icon" href="/images/Black.ico" type="image/x-icon">
@@ -20,7 +20,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-dark header">
       <div class="container-fluid">
-        <a class="navbar-brand">Sentinel Vision
+        <a class="navbar-brand" href="index.html">Sense-Vis
           <img src="images/White.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
@@ -28,7 +28,7 @@
         </button>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Sentinel Vision</h5>
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Sense-Vis</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
@@ -70,7 +70,7 @@
         <div class="main-content flex-grow-1">
         
           <div class="container-upload">
-            <h3 class="mt-1">Upload .tif File</h3>
+            <h3 class="mt-2">Upload .tif File</h3>
             <form id="uploadForm" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="tifFile" class="form-label">Choose .tif or .tiff file (Max: 5MB)</label>
@@ -87,7 +87,7 @@
 
 
         <!-- Image -->
-        <div class="image-center">
+        <div class="image-center" id="image-container">
             <img id="upload-image"/>
             <img id="mask-image"/>
         </div>
