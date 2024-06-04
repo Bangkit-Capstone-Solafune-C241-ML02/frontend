@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentTime = new Date().getTime();
 
   // Check if modal should be shown based on time and storage
-  if (!lastModalShownTime || currentTime - parseInt(lastModalShownTime) > 1*60*1000) {
+  if (!lastModalShownTime || currentTime - parseInt(lastModalShownTime) > 5*60*1000) {
     modalOpening.show();
     localStorage.setItem('lastModalShownTime', currentTime.toString());
   }
