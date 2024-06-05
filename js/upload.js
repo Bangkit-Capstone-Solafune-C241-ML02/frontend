@@ -185,7 +185,8 @@ async function handleUpload(event) {
 
     formData.append('tifFile', fileField.files[0]);
     const config = await loadConfig();
-    const endpoint = `${config.BASE_URL}${config.ENDPOINTS.UPLOAD}`;
+    const endpoint_upload = `${config.BASE_URL}${config.ENDPOINTS.UPLOAD}`;
+    const endpoint_mask = `${config.BASE_URL}${config.ENDPOINTS.MASK_UPLOAD}`;
 
     const uploadBtn = document.getElementById('uploadBtn');
     const uploadText = document.getElementById('uploadText');
@@ -196,26 +197,46 @@ async function handleUpload(event) {
     uploadSpinner.style.display = "inline-block";
 
     try {
-        const response = await fetch(endpoint, {
+        // Upload file
+        const response_upload = await fetch(endpoint_upload, {
             method: 'POST',
             body: formData
         });
 
-        if (!response.ok) {
+        if (!response_upload.ok) {
             throw new Error('Network response was not ok');
         }
 
-        const blob = await response.blob();
-        const imgUrl = URL.createObjectURL(blob);
+        const blob_upload = await response_upload.blob();
+        const imgUrl_upload = URL.createObjectURL(blob_upload);
 
+        uploadText.textContent = "Detecting...";
+
+        // Upload mask
+        const response_mask = await fetch(endpoint_mask, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response_mask.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const blob_mask = await response_mask.blob();
+        const imgUrl_mask = URL.createObjectURL(blob_mask);
+
+
+        // Display images upload
         const imgElement = document.getElementById('upload-image');
-        imgElement.src = imgUrl;
+        imgElement.src = imgUrl_upload;
         imgElement.style.display = 'block';
 
+        // Display images mask
         const imgElementMask = document.getElementById('mask-image');
-        imgElementMask.src = imgUrl;
+        imgElementMask.src = imgUrl_mask;
         imgElementMask.style.display = 'block';
 
+        // Mengosongkan field value upload
         fileField.value = '';
 
         const convertBtn = document.getElementById('convertBtn');

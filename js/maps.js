@@ -320,10 +320,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // Fungsi untuk mengirim koordinat ke server
 async function sendCoordinates(lat, lng) {
   const config = await loadConfig();
-  const endpoint = `${config.BASE_URL}${config.ENDPOINTS.DOWNLOAD}`;
+  const endpoint_download = `${config.BASE_URL}${config.ENDPOINTS.DOWNLOAD}`;
+  const endpoint_mask = `${config.BASE_URL}${config.ENDPOINTS.MASK_SENTINEL}`;
 
   try {
-      const response = await fetch(endpoint, {
+      const response_download = await fetch(endpoint_download, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
@@ -331,19 +332,37 @@ async function sendCoordinates(lat, lng) {
           body: JSON.stringify({ latitude: lat, longitude: lng })
       });
 
-      if (!response.ok) {
+      if (!response_download.ok) {
           throw new Error('Network response was not ok');
       }
 
-      const blob = await response.blob();
-      const imgUrl = URL.createObjectURL(blob);
+      const blob_download = await response_download.blob();
+      const imgUrl_download = URL.createObjectURL(blob_download);
+
+      sendText.textContent = "Detecting...";
+
+      const response_mask = await fetch(endpoint_mask, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ latitude: lat, longitude: lng })
+      });
+
+      if (!response_mask.ok) {
+          throw new Error('Network response was not ok');
+      }
+
+      const blob_mask = await response_mask.blob();
+      const imgUrl_mask = URL.createObjectURL(blob_mask);
+
 
       const imgElement = document.getElementById('map-image');
-      imgElement.src = imgUrl;
+      imgElement.src = imgUrl_download;
       imgElement.style.display = 'block';
 
       const imgElementMask = document.getElementById('mask-image');
-      imgElementMask.src = imgUrl;
+      imgElementMask.src = imgUrl_mask;
       imgElementMask.style.display = 'block'
 
       showDiv();

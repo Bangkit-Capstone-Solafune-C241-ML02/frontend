@@ -4,6 +4,8 @@
         "DOWNLOAD": "/downloadTif",
         "CONVERT_SENTINEL": "/convertTifSentinel",
         "CONVERT_UPLOAD": "/convertTifUpload",
-        "UPLOAD": "/uploadTif"
+        "UPLOAD": "/uploadTif",
+        "MASK_SENTINEL":"/maskTifSentinel",
+        "MASK_UPLOAD":"/maskTifUpload"
     }
 }

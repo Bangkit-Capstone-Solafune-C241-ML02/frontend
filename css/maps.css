@@ -154,8 +154,8 @@ html, body {
 #mask-image,
 #upload-image {
   display: block;
-  max-width: 35%; /* Biar gambar memenuhi card */
-  height: auto;
+  max-width: 256px; /* Biar gambar memenuhi card */
+  height: 256px;
   margin: 10px; /* Jarak antar gambar dalam card */
   border-radius: 3%;
   box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
@@ -379,8 +379,20 @@ footer .p-3 {
   z-index: 5;
 }
 
+/* Responsive search box */
+@media (max-width: 1100px) {
+  #pac-input {
+    width: 50%;
+    max-width: 600px;
+    margin: 5px auto;
+    position: relative;
+    display: block;
+    text-align: center;
+  }
+}
+
 /* Responsive adjustments */
-@media (max-width: 864px) {
+@media (max-width: 1000px) {
   /* Adjust layout for tablets */
   .main {
     flex-direction: column;
