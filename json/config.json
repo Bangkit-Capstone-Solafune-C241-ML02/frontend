@@ -1,11 +1,11 @@
 {
-    "BASE_URL": "http://192.168.56.1:5000",
+    "BASE_URL": "test",
     "ENDPOINTS": {
         "DOWNLOAD": "/downloadTif",
         "CONVERT_SENTINEL": "/convertTifSentinel",
         "CONVERT_UPLOAD": "/convertTifUpload",
         "UPLOAD": "/uploadTif",
-        "MASK_SENTINEL":"/maskTifSentinel",
-        "MASK_UPLOAD":"/maskTifUpload"
+        "MASK_SENTINEL": "/maskTifSentinel",
+        "MASK_UPLOAD": "/maskTifUpload"
     }
 }
