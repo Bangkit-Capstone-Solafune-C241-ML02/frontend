@@ -1,14 +1,14 @@
 {
   "items": [
-    { "id": "item1", "lat": 34.935555436135516, "lng": -118.33338988377007, "text": "Solar Star" },
-    { "id": "item2", "lat": 31.650833, "lng": 130.841944, "text": "Solar photovoltaic" },
-    { "id": "item3", "lat": 36.437824, "lng": 139.575864, "text": "Sano, Tochigi" },
-    { "id": "item4", "lat": 41.72579520919084, "lng": 22.15401670344236, "text": "Photovoltaic E D S" },
+    { "id": "item1", "lat": 13.923014332067346, "lng": 120.67032564899353, "text": "Solar Farm View H" },
+    { "id": "item2", "lat": 31.652206256060996, "lng": 130.8434305441663, "text": "Fukuyamacho F" },
+    { "id": "item3", "lat": 3.7214230431120887, "lng": 103.0802661558294, "text": "UiTM Solar Park" },
+    { "id": "item4", "lat": 5.648049508162921, "lng": 100.6175660195036, "text": "Leader Solar Energy" },
     { "id": "item5", "lat": 34.63515860479466, "lng": 134.1531408326481, "text": "Setouchi K M Solar" },
     { "id": "item6", "lat": 34.714444, "lng": 137.268611, "text": "Tahara Solar Wind" },
     { "id": "item7", "lat": 32.933957, "lng": 129.708226, "text": "Osetocho" },
     { "id": "item8", "lat": 33.849045, "lng": 136.059177, "text": "Minamimuro District" },
-    { "id": "item9", "lat": -28.31341216977502, "lng": 23.365974656698977, "text": "Jasper Solar" },
+    { "id": "item9", "lat": 10.8052044, "lng": 122.991936, "text": "Silay City" },
     { "id": "item10", "lat": 1.656000374049244, "lng": 125.09363323009345, "text": "PLTS Likupang" }
   ]
 }
