@@ -244,19 +244,19 @@ async function sendDropdownValues(values) {
 
 function mapDropdownValues(values) {
   const mapping = {
-    'B1 (Aerosols)': 1,
-    'B2 (Blue)': 2,
-    'B3 (Green)': 3,
-    'B4 (Red)': 4,
-    'B5 (Red Edge 1)': 5,
-    'B6 (Red Edge 2)': 6,
-    'B7 (Red Edge 3)': 7,
-    'B8 (NIR)': 8,
-    'B8A (Red Edge 4)': 9,
-    'B9 (Water vapor)': 10,
-    'B11 (SWIR 1)': 11,
-    'B12 (SWIR 2)': 12
-  };
+    'B1 (Aerosols)': 0,
+    'B2 (Blue)': 1,
+    'B3 (Green)': 2,
+    'B4 (Red)': 3,
+    'B5 (Red Edge 1)': 4,
+    'B6 (Red Edge 2)': 5,
+    'B7 (Red Edge 3)': 6,
+    'B8 (NIR)': 7,
+    'B8A (Red Edge 4)': 8,
+    'B9 (Water vapor)': 9,
+    'B11 (SWIR 1)': 10,
+    'B12 (SWIR 2)': 11
+};
 
   return values.map(value => mapping[value]);
 }
