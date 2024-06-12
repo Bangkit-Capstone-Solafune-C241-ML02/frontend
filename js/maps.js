@@ -384,6 +384,7 @@ async function sendCoordinates(lat, lng) {
 
       showDiv();
       forecast(lat,lng);
+      statistics();
 
   } catch (error) {
       console.error('Error sending coordinates:', error);
@@ -545,6 +546,11 @@ function analyzeSolarPanelOptimality(noonForecasts) {
 
   console.log(`Total optimal days: ${optimalDays}`);
   return optimalDays;
+}
+
+function statistics() {
+  const statistics = document.getElementById('statistics');
+  statistics.style.display = 'block';
 }
 
 setupModal("map-image", "modalSentinel", "img01", "caption");

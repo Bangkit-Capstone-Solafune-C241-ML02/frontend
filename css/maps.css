@@ -466,6 +466,11 @@ border-radius: 50%;
 }
 /*Akhir revisi*/
 
+/* Styling statistics */
+#statistics{
+  display: none;
+}
+
 /* Styling footer */
 footer {
   flex-shrink: 0;
