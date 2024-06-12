@@ -131,6 +131,19 @@ html, body {
   box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
 }
 
+/* Styling untuk image hasil painting */
+#painting-image{
+  border-radius: 3%;
+  display: none; 
+  max-width: 20%; 
+  height: auto;
+  margin: 5px;
+}
+
+#painting-image:hover {
+  box-shadow: 0 0 15px 0 rgb(0 21 38 / 50%);
+}
+
 
 .image-center {
   margin-top: 20px;
@@ -150,9 +163,28 @@ html, body {
   flex-wrap: wrap; /* Pastikan gambar bisa membungkus */
 }
 
+.image-center figure {
+  text-align: center;
+  max-width: 100%;
+}
+
+.image-center img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.image-center figcaption {
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+
 #map-image,
 #mask-image,
-#upload-image {
+#upload-image,
+#painting-image{
   display: block;
   max-width: 256px; /* Biar gambar memenuhi card */
   height: 256px;
@@ -164,7 +196,8 @@ html, body {
 
 #map-image:hover,
 #mask-image:hover,
-#upload-image:hover {
+#upload-image:hover,
+#painting-image:hover {
   box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.5); /* Efek hover untuk gambar */
 }
 /*Akhir revisi card*/
@@ -473,6 +506,13 @@ footer .p-3 {
     height: auto;
   }
 
+  #painting-image{
+    border-radius: 3%;
+    display: none; 
+    max-width: 45%; 
+    height: auto;
+  }
+
   .image-center {
     width: 60%;
     padding: 10px;
@@ -480,8 +520,9 @@ footer .p-3 {
   }
   #map-image,
   #mask-image,
-  #upload-image{
-    max-width: 90%; /* Gambar memenuhi card pada layar kecil */
+  #upload-image,
+  #painting-image{
+    max-width: 100%; /* Gambar memenuhi card pada layar kecil */
     margin: 5px 0; /* Kurangi jarak antar gambar pada layar kecil */
   }
 }

@@ -88,8 +88,18 @@
 
         <!-- Image -->
         <div class="image-center" id="image-container">
+          <figure>
             <img id="upload-image"/>
+            <figcaption>Uploaded Image</figcaption>
+          </figure>
+          <figure>
+            <img id="painting-image"/>
+            <figcaption>Detected Solar Panel</figcaption>
+          </figure>
+          <figure>
             <img id="mask-image"/>
+            <figcaption>Mask</figcaption>
+          </figure>
         </div>
 
         <!-- Modal Upload-->
@@ -103,6 +113,13 @@
         <div id="modalMask" class="modal image-model">
           <span class="close">&times;</span>
           <img class="modal-content" id="img02">
+          <div id="caption"></div>
+        </div>
+
+        <!-- Modal Painting-->
+        <div id="modalPainting" class="modal image-model">
+          <span class="close">&times;</span>
+          <img class="modal-content" id="img03">
           <div id="caption"></div>
         </div>
 

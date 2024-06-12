@@ -6,6 +6,8 @@
         "CONVERT_UPLOAD": "/convertTifUpload",
         "UPLOAD": "/uploadTif",
         "MASK_SENTINEL": "/maskTifSentinel",
-        "MASK_UPLOAD": "/maskTifUpload"
+        "MASK_UPLOAD": "/maskTifUpload",
+        "PAINTING_SENTINEL": "/paintingTifSentinel",
+        "PAINTING_UPLOAD": "/paintingTifUpload"
     }
 }

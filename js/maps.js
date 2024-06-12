@@ -123,10 +123,13 @@ document.getElementById('sendBtn').addEventListener('click', async () => {
   sendSpinner.style.display = "inline-block";
 
   if (latLng) {
+      fileError.style.display = 'none';
       await sendCoordinates(latLng.lat, latLng.lng);
       createInputFields();
   } else {
       console.warn('No coordinates selected.');
+      const fileError = document.getElementById('fileError');
+      fileError.style.display = 'block';
   }
 
   // Reset button
@@ -322,8 +325,10 @@ async function sendCoordinates(lat, lng) {
   const config = await loadConfig();
   const endpoint_download = `${config.BASE_URL}${config.ENDPOINTS.DOWNLOAD}`;
   const endpoint_mask = `${config.BASE_URL}${config.ENDPOINTS.MASK_SENTINEL}`;
+  const endpoint_painting = `${config.BASE_URL}${config.ENDPOINTS.PAINTING_SENTINEL}`;
 
   try {
+    // Request download
       const response_download = await fetch(endpoint_download, {
           method: 'POST',
           headers: {
@@ -341,12 +346,9 @@ async function sendCoordinates(lat, lng) {
 
       sendText.textContent = "Detecting...";
 
+      // Request mask
       const response_mask = await fetch(endpoint_mask, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ latitude: lat, longitude: lng })
       });
 
       if (!response_mask.ok) {
@@ -356,6 +358,17 @@ async function sendCoordinates(lat, lng) {
       const blob_mask = await response_mask.blob();
       const imgUrl_mask = URL.createObjectURL(blob_mask);
 
+      // Request painting
+      const response_painting= await fetch(endpoint_painting, {
+        method: 'POST',
+      });
+
+      if (!response_painting.ok) {
+          throw new Error('Network response was not ok');
+      }
+
+      const blob_painting = await response_painting.blob();
+      const imgUrl_painting = URL.createObjectURL(blob_painting);
 
       const imgElement = document.getElementById('map-image');
       imgElement.src = imgUrl_download;
@@ -364,6 +377,10 @@ async function sendCoordinates(lat, lng) {
       const imgElementMask = document.getElementById('mask-image');
       imgElementMask.src = imgUrl_mask;
       imgElementMask.style.display = 'block'
+
+      const imgElementPainting = document.getElementById('painting-image');
+      imgElementPainting.src = imgUrl_painting;
+      imgElementPainting.style.display = 'block'
 
       showDiv();
 
@@ -430,5 +447,6 @@ function showDiv() {
 
 setupModal("map-image", "modalSentinel", "img01", "caption");
 setupModal("mask-image", "modalMask", "img02", "caption");
+setupModal("painting-image", "modalPainting", "img03", "caption");
 hideDiv();
 initMap();

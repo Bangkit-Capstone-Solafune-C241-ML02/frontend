@@ -187,6 +187,7 @@ async function handleUpload(event) {
     const config = await loadConfig();
     const endpoint_upload = `${config.BASE_URL}${config.ENDPOINTS.UPLOAD}`;
     const endpoint_mask = `${config.BASE_URL}${config.ENDPOINTS.MASK_UPLOAD}`;
+    const endpoint_painting = `${config.BASE_URL}${config.ENDPOINTS.PAINTING_UPLOAD}`;
 
     const uploadBtn = document.getElementById('uploadBtn');
     const uploadText = document.getElementById('uploadText');
@@ -225,6 +226,20 @@ async function handleUpload(event) {
         const blob_mask = await response_mask.blob();
         const imgUrl_mask = URL.createObjectURL(blob_mask);
 
+        
+        // Upload painting
+        const response_painting = await fetch(endpoint_painting, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response_painting.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const blob_painting = await response_painting.blob();
+        const imgUrl_painting = URL.createObjectURL(blob_painting);
+
 
         // Display images upload
         const imgElement = document.getElementById('upload-image');
@@ -235,6 +250,11 @@ async function handleUpload(event) {
         const imgElementMask = document.getElementById('mask-image');
         imgElementMask.src = imgUrl_mask;
         imgElementMask.style.display = 'block';
+
+        // Display images painting
+        const imgElementPainting = document.getElementById('painting-image');
+        imgElementPainting.src = imgUrl_painting;
+        imgElementPainting.style.display = 'block';
 
         // Mengosongkan field value upload
         fileField.value = '';
@@ -248,6 +268,7 @@ async function handleUpload(event) {
         showDiv();
         setupModal("upload-image", "modalUpload", "img01", "caption");
         setupModal("mask-image", "modalUpload", "img01", "caption");
+        setupModal("painting-image", "modalUpload", "img01", "caption");
     } catch (error) {
         console.error('Error:', error);
     }
