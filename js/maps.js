@@ -383,6 +383,7 @@ async function sendCoordinates(lat, lng) {
       imgElementPainting.style.display = 'block'
 
       showDiv();
+      forecast(lat,lng);
 
   } catch (error) {
       console.error('Error sending coordinates:', error);
@@ -443,6 +444,63 @@ function hideDiv() {
 function showDiv() {
     var div = document.getElementById("image-container");
     div.style.display = "flex"; // Revert to default 'block' if originalDisplayStyle is undefined
+}
+
+
+async function forecast(lat, lon) {
+  const apiKey = 'd2f50901f43c3edecd250f380e7ea6a0';
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&cnt=32`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    const noonForecasts = data.list.filter(item => item.dt_txt.endsWith("12:00:00"));
+
+    // Update nama kota
+    const locationNameElement = document.getElementById('locationName');
+    if (locationNameElement) {
+      locationNameElement.innerHTML = `<strong>Weather Forecast for ${data.city.name}</strong>`;
+    }
+
+    // Container untuk menambahkan elemen cuaca
+    const forecast = document.getElementById('forecast');
+    const forecastBox = document.getElementById('box');
+    
+    // Kosongkan container sebelumnya
+    forecast.style.display = 'block';
+    forecastBox.innerHTML = '';
+
+    noonForecasts.forEach((forecast, index) => {
+      // Format tanggal
+      const date = new Date(forecast.dt_txt);
+      const options = { weekday: 'short', month: 'short', day: 'numeric' };
+      const formattedDate = date.toLocaleDateString('en-US', options);
+
+      // URL ikon
+      const iconUrl = `https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`;
+
+      // Buat elemen untuk setiap hari
+      const dayDiv = document.createElement('div');
+      dayDiv.classList.add('flex-column');
+      dayDiv.id = `day${index + 1}`;
+      
+      // Isi elemen dengan data cuaca
+      dayDiv.innerHTML = `
+        <p class="small"><strong>${formattedDate}</strong></p>
+        <img src="${iconUrl}" alt="Weather Icon" class="mb-3" style="width: 50px; height: 50px;">
+        <p class="mb-0"><strong>${forecast.weather[0].description}</strong></p>
+        <p class="mb-0"><strong>${forecast.clouds.all} %</strong></p>
+      `;
+
+      // Tambahkan elemen ke dalam container
+      forecastBox.appendChild(dayDiv);
+    });
+  } catch (error) {
+    console.error('Ada masalah dengan permintaan fetch:', error);
+  }
 }
 
 setupModal("map-image", "modalSentinel", "img01", "caption");
