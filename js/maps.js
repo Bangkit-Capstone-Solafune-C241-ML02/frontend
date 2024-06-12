@@ -473,6 +473,14 @@ async function forecast(lat, lon) {
     forecast.style.display = 'block';
     forecastBox.innerHTML = '';
 
+    // Analisis optimal days
+    const optimalDaysCount = analyzeSolarPanelOptimality(noonForecasts);
+    const optimalDays = document.getElementById('optimalDays');
+
+    if (optimalDays) {
+      optimalDays.innerHTML = `<strong>Optimal Days: ${optimalDaysCount}</strong>`;
+    }
+
     noonForecasts.forEach((forecast, index) => {
       // Format tanggal
       const date = new Date(forecast.dt_txt);
@@ -492,15 +500,51 @@ async function forecast(lat, lon) {
         <p class="small"><strong>${formattedDate}</strong></p>
         <img src="${iconUrl}" alt="Weather Icon" class="mb-3" style="width: 50px; height: 50px;">
         <p class="mb-0"><strong>${forecast.weather[0].description}</strong></p>
-        <p class="mb-0"><strong>${forecast.clouds.all} %</strong></p>
+        <p class="mb-0" style="color:#B9B9B9;font-size:10px;">cloud coverage</p>
+        <p class="mb-0"><strong>${forecast.clouds.all}%</strong></p>
       `;
 
       // Tambahkan elemen ke dalam container
       forecastBox.appendChild(dayDiv);
     });
+
   } catch (error) {
     console.error('Ada masalah dengan permintaan fetch:', error);
   }
+}
+
+function analyzeSolarPanelOptimality(noonForecasts) {
+  let optimalDays = 0;
+
+  noonForecasts.forEach(forecast => {
+    const description = forecast.weather[0].description;
+    const cloudCoverage = forecast.clouds.all;
+    const rainVolume = forecast.rain ? forecast.rain['3h'] : 0;
+    const temperature = forecast.main.temp; // Suhu dalam Celsius
+
+    console.log(`Date: ${forecast.dt_txt}`);
+    console.log(`Description: ${description}`);
+    console.log(`Cloud Coverage: ${cloudCoverage}%`);
+    console.log(`Rain Volume: ${rainVolume}mm`);
+    console.log(`Temperature: ${temperature.toFixed(2)}°C`);
+
+    // Tentukan optimalitas
+    if (
+      (description.includes('clear') || description.includes('few clouds') || description.includes('scattered clouds')) &&
+      cloudCoverage < 50 &&
+      rainVolume === 0 &&
+      temperature >= 10 && temperature <= 40 // Kisaran suhu optimal
+    ) {
+      console.log('Condition is optimal for solar panels.');
+      optimalDays++;
+    } else {
+      console.log('Condition is not optimal for solar panels.');
+    }
+    console.log('---');
+  });
+
+  console.log(`Total optimal days: ${optimalDays}`);
+  return optimalDays;
 }
 
 setupModal("map-image", "modalSentinel", "img01", "caption");
