@@ -419,6 +419,53 @@ border-radius: 50%;
   display: none;
 }
 
+/* Revisi Styling untuk card day */
+#box {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.flex-column {
+  position: relative;
+  background-color: hsl(212, 42%, 20%);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 26%);
+  transition: transform 0.5s;
+  flex: 0 0 100px;
+  margin: 0 7px;
+}
+
+.flex-column:hover {
+  transform: translateY(-10px);
+}
+
+/* Efek 3D */
+.flex-column::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(237 249 255 / 10%);
+  border-radius: 10px;
+  transition: transform 0.5s;
+  transform: perspective(500px) rotateX(0deg) rotateY(0deg);
+}
+
+.flex-column:hover::before {
+  transform: perspective(500px) rotateX(5deg) rotateY(5deg);
+}
+
+.flex-column p {
+  color: white;
+  font-size: 12px;
+}
+/*Akhir revisi*/
+
 /* Styling footer */
 footer {
   flex-shrink: 0;
@@ -471,6 +518,28 @@ footer .p-3 {
   }
   .coordinates {
     margin-top: 10px;
+  }
+
+  #box {
+  display: flex;
+  justify-content: flex-start;
+  text-align: center;
+  margin-bottom: 4px;
+  overflow-x: auto; /* Mengaktifkan geser horizontal */
+  cursor: pointer; /* Menampilkan cursor geser */
+  -webkit-overflow-scrolling: touch; /* Aktifkan scrolling geser di perangkat mobile */
+  }
+
+  .flex-column {
+  flex: 0 0 90px;
+  }
+
+  .flex-column {
+    padding: 5px; /* Mengurangi padding pada card */
+  }
+
+  .flex-column p {
+    font-size: 12px; /* Mengurangi ukuran font */
   }
   
 }
@@ -546,5 +615,27 @@ footer .p-3 {
   #painting-image{
     max-width: 100%; /* Gambar memenuhi card pada layar kecil */
     margin: 5px 0; /* Kurangi jarak antar gambar pada layar kecil */
+  }
+
+  #box {
+  display: flex;
+  justify-content: flex-start;
+  text-align: center;
+  margin-bottom: 4px;
+  overflow-x: auto; /* Mengaktifkan geser horizontal */
+  cursor: pointer; /* Menampilkan cursor geser */
+  -webkit-overflow-scrolling: touch; /* Aktifkan scrolling geser di perangkat mobile */
+  }
+  
+  .flex-column {
+  flex: 0 0 70px;
+  }
+
+  .flex-column {
+    padding: 5px; /* Mengurangi padding pada card */
+  }
+
+  .flex-column p {
+    font-size: 10px; /* Mengurangi ukuran font */
   }
 }
