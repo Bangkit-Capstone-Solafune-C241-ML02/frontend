@@ -334,7 +334,7 @@ async function sendCoordinates(lat, lng) {
           headers: {
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ latitude: lat, longitude: lng })
+          body: JSON.stringify({ latitude: lat, longitude: lng, uid: getUID() })
       });
 
       if (!response_download.ok) {
@@ -357,7 +357,7 @@ async function sendCoordinates(lat, lng) {
 
       const blob_mask = await response_mask.blob();
       const imgUrl_mask = URL.createObjectURL(blob_mask);
-
+      
       // Request painting
       const response_painting= await fetch(endpoint_painting, {
         method: 'POST',
@@ -551,6 +551,24 @@ function analyzeSolarPanelOptimality(noonForecasts) {
 function statistics() {
   const statistics = document.getElementById('statistics');
   statistics.style.display = 'block';
+}
+
+// Fungsi untuk mendapatkan UID
+function getUID() {
+  return localStorage.getItem('userUID') || 'defaultUID';
+}
+
+// Menyimpan UID di Frontend
+document.addEventListener('DOMContentLoaded', () => {
+  if (!localStorage.getItem('userUID')) {
+    const uid = generateUID();  // Fungsi untuk membuat UID
+    localStorage.setItem('userUID', uid);
+  }
+});
+
+// Fungsi sederhana untuk membuat UID
+function generateUID() {
+  return 'uid-' + Math.random().toString(36).substr(2, 16);
 }
 
 setupModal("map-image", "modalSentinel", "img01", "caption");

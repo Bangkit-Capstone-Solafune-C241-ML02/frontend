@@ -70,6 +70,12 @@
       margin-top: 7rem;
     }
   }
+
+  @media (max-width: 480px) {
+    .dekstop{
+      display: none;
+    }
+  }
   
 
 img.fullscreen-image {
