@@ -226,7 +226,7 @@ async function sendDropdownValues(values) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ values })
+      body: JSON.stringify({ values: values, uid: getUID() })
     });
 
     if (!response.ok) {
@@ -349,6 +349,10 @@ async function sendCoordinates(lat, lng) {
       // Request mask
       const response_mask = await fetch(endpoint_mask, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({uid: getUID() })
       });
 
       if (!response_mask.ok) {
@@ -361,6 +365,10 @@ async function sendCoordinates(lat, lng) {
       // Request painting
       const response_painting= await fetch(endpoint_painting, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+      },
+         body: JSON.stringify({uid: getUID() })
       });
 
       if (!response_painting.ok) {

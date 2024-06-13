@@ -92,7 +92,7 @@ async function sendDropdownValues(values) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ values })
+            body: JSON.stringify({ values:values, uid: getUID()})
         });
   
         if (!response.ok) {
@@ -184,6 +184,7 @@ async function handleUpload(event) {
     }
 
     formData.append('tifFile', fileField.files[0]);
+    formData.append('uid', getUID());
     const config = await loadConfig();
     const endpoint_upload = `${config.BASE_URL}${config.ENDPOINTS.UPLOAD}`;
     const endpoint_mask = `${config.BASE_URL}${config.ENDPOINTS.MASK_UPLOAD}`;
@@ -197,11 +198,16 @@ async function handleUpload(event) {
     uploadText.textContent = "Loading...";
     uploadSpinner.style.display = "inline-block";
 
+    
+    // for (let [key, value] of formData.entries()) {
+    //     console.log(`${key}: ${value}`);
+    // }
+
     try {
         // Upload file
         const response_upload = await fetch(endpoint_upload, {
             method: 'POST',
-            body: formData
+            body: formData,
         });
 
         if (!response_upload.ok) {
@@ -216,7 +222,10 @@ async function handleUpload(event) {
         // Upload mask
         const response_mask = await fetch(endpoint_mask, {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({uid: getUID() })
         });
 
         if (!response_mask.ok) {
@@ -230,7 +239,10 @@ async function handleUpload(event) {
         // Upload painting
         const response_painting = await fetch(endpoint_painting, {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({uid: getUID() })
         });
 
         if (!response_painting.ok) {
@@ -284,6 +296,24 @@ function hideDiv() {
 function showDiv() {
     var div = document.getElementById("image-container");
     div.style.display = "flex"; // Revert to default 'block' if originalDisplayStyle is undefined
+}
+
+// Fungsi untuk mendapatkan UID
+function getUID() {
+    return localStorage.getItem('userUID') || 'defaultUID';
+  }
+  
+// Menyimpan UID di Frontend
+document.addEventListener('DOMContentLoaded', () => {
+if (!localStorage.getItem('userUID')) {
+    const uid = generateUID();  // Fungsi untuk membuat UID
+    localStorage.setItem('userUID', uid);
+}
+});
+
+// Fungsi sederhana untuk membuat UID
+function generateUID() {
+return 'uid-' + Math.random().toString(36).substr(2, 16);
 }
 
 hideDiv();
