@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Detect From Images</title>
-  <meta name="description" content="sentinel vision adalah sebuah platform yang memungkinan pengguna untuk melakukan deteksi dan mask terhadap solar paner">
+  <meta name="description" content="Sense-Vis adalah sebuah platform yang memungkinan pengguna untuk melakukan deteksi dan mask terhadap solar paner">
   <meta name="keywords" content="yolov5, sentinel2, mask, solar panel">
   <meta name="author" content="Abiya, Rafly, Irfani, Riyang">
-  <link rel="icon" href="/images/Black.ico" type="image/x-icon">
+  <link rel="icon" href="images/Black.ico" type="image/x-icon">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="/css/maps.css" />
-  <link rel="stylesheet" type="text/css" href="/css/upload.css" />
+  <link rel="stylesheet" type="text/css" href="css/maps.css" />
+  <link rel="stylesheet" type="text/css" href="css/upload.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 </head>
@@ -20,15 +20,15 @@
     <!-- Navbar -->
     <nav class="navbar navbar-dark header">
       <div class="container-fluid">
-        <a class="navbar-brand">Sentinel Vision
-          <img src="images/White.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+        <a class="navbar-brand" href="index.html" style="font-size: 30px;">Sense-Vis
+          <img src="images/White.svg" alt="Logo" style="max-width: 30%;" class="d-inline-block align-text-top">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Sentinel Vision</h5>
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Sense-Vis</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
@@ -57,12 +57,14 @@
       <div class="sidebar bg-light p-3">
 
         <!-- Dynamic Input Fields -->
-        <h4 class="mt-3" id="SelectBand">Select Band 
-          <i class="bi bi-layers"></i>
-        </h4>
-        <div id="dynamicFields" class="mt-3"></div>
-        <!-- Convert Button Placeholder -->
-        <div id="convertButtonContainer" class="mt-2"></div>
+        <div id="dynamics-upload"> 
+          <h4 class="mt-3" id="SelectBand">Select Band 
+            <i class="bi bi-layers"></i>
+          </h4>
+          <div id="dynamicFields" class="mt-3"></div>
+          <!-- Convert Button Placeholder -->
+          <div id="convertButtonContainer" class="mt-2"></div>
+        </div>
 
       </div>
 
@@ -70,7 +72,7 @@
         <div class="main-content flex-grow-1">
         
           <div class="container-upload">
-            <h3 class="mt-1">Upload .tif File</h3>
+            <h3 class="mt-2">Upload .tif File</h3>
             <form id="uploadForm" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="tifFile" class="form-label">Choose .tif or .tiff file (Max: 5MB)</label>
@@ -87,9 +89,19 @@
 
 
         <!-- Image -->
-        <div class="image-center">
+        <div class="image-center" id="image-container">
+          <figure>
             <img id="upload-image"/>
+            <figcaption>Uploaded Image</figcaption>
+          </figure>
+          <figure>
+            <img id="painting-image"/>
+            <figcaption>Detected Solar Panel</figcaption>
+          </figure>
+          <figure>
             <img id="mask-image"/>
+            <figcaption>Mask</figcaption>
+          </figure>
         </div>
 
         <!-- Modal Upload-->
@@ -106,18 +118,25 @@
           <div id="caption"></div>
         </div>
 
+        <!-- Modal Painting-->
+        <div id="modalPainting" class="modal image-model">
+          <span class="close">&times;</span>
+          <img class="modal-content" id="img03">
+          <div id="caption"></div>
+        </div>
+
         </div>
     </div>
 
     <!-- Footer -->
     <footer class="text-center">
       <div class="text-center p-3">
-        © 2024 Copyright
+        © 2024
       </div>
     </footer>
   </div>
 
-  <script src="/js/upload.js"></script>
+  <script src="js/upload.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -105,3 +105,18 @@ video {
   max-width: 100%;
   border-radius: 10px;
 }
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.main-content-animated {
+  animation: slideUp 1s ease-out;
+}

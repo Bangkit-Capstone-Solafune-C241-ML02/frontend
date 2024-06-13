@@ -92,7 +92,7 @@ async function sendDropdownValues(values) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ values })
+            body: JSON.stringify({ values:values, uid: getUID()})
         });
   
         if (!response.ok) {
@@ -116,18 +116,18 @@ async function sendDropdownValues(values) {
 // Fungsi untuk memetakan nilai dropdown
 function mapDropdownValues(values) {
     const mapping = {
-        'B1 (Aerosols)': 1,
-        'B2 (Blue)': 2,
-        'B3 (Green)': 3,
-        'B4 (Red)': 4,
-        'B5 (Red Edge 1)': 5,
-        'B6 (Red Edge 2)': 6,
-        'B7 (Red Edge 3)': 7,
-        'B8 (NIR)': 8,
-        'B8A (Red Edge 4)': 9,
-        'B9 (Water vapor)': 10,
-        'B11 (SWIR 1)': 11,
-        'B12 (SWIR 2)': 12
+        'B1 (Aerosols)': 0,
+        'B2 (Blue)': 1,
+        'B3 (Green)': 2,
+        'B4 (Red)': 3,
+        'B5 (Red Edge 1)': 4,
+        'B6 (Red Edge 2)': 5,
+        'B7 (Red Edge 3)': 6,
+        'B8 (NIR)': 7,
+        'B8A (Red Edge 4)': 8,
+        'B9 (Water vapor)': 9,
+        'B11 (SWIR 1)': 10,
+        'B12 (SWIR 2)': 11
     };
   
     return values.map(value => mapping[value]);
@@ -184,8 +184,11 @@ async function handleUpload(event) {
     }
 
     formData.append('tifFile', fileField.files[0]);
+    formData.append('uid', getUID());
     const config = await loadConfig();
-    const endpoint = `${config.BASE_URL}${config.ENDPOINTS.UPLOAD}`;
+    const endpoint_upload = `${config.BASE_URL}${config.ENDPOINTS.UPLOAD}`;
+    const endpoint_mask = `${config.BASE_URL}${config.ENDPOINTS.MASK_UPLOAD}`;
+    const endpoint_painting = `${config.BASE_URL}${config.ENDPOINTS.PAINTING_UPLOAD}`;
 
     const uploadBtn = document.getElementById('uploadBtn');
     const uploadText = document.getElementById('uploadText');
@@ -195,27 +198,77 @@ async function handleUpload(event) {
     uploadText.textContent = "Loading...";
     uploadSpinner.style.display = "inline-block";
 
+    
+    // for (let [key, value] of formData.entries()) {
+    //     console.log(`${key}: ${value}`);
+    // }
+
     try {
-        const response = await fetch(endpoint, {
+        // Upload file
+        const response_upload = await fetch(endpoint_upload, {
             method: 'POST',
-            body: formData
+            body: formData,
         });
 
-        if (!response.ok) {
+        if (!response_upload.ok) {
             throw new Error('Network response was not ok');
         }
 
-        const blob = await response.blob();
-        const imgUrl = URL.createObjectURL(blob);
+        const blob_upload = await response_upload.blob();
+        const imgUrl_upload = URL.createObjectURL(blob_upload);
 
+        uploadText.textContent = "Detecting...";
+
+        // Upload mask
+        const response_mask = await fetch(endpoint_mask, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({uid: getUID() })
+        });
+
+        if (!response_mask.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const blob_mask = await response_mask.blob();
+        const imgUrl_mask = URL.createObjectURL(blob_mask);
+
+        
+        // Upload painting
+        const response_painting = await fetch(endpoint_painting, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({uid: getUID() })
+        });
+
+        if (!response_painting.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const blob_painting = await response_painting.blob();
+        const imgUrl_painting = URL.createObjectURL(blob_painting);
+
+
+        // Display images upload
         const imgElement = document.getElementById('upload-image');
-        imgElement.src = imgUrl;
+        imgElement.src = imgUrl_upload;
         imgElement.style.display = 'block';
 
+        // Display images mask
         const imgElementMask = document.getElementById('mask-image');
-        imgElementMask.src = imgUrl;
+        imgElementMask.src = imgUrl_mask;
         imgElementMask.style.display = 'block';
 
+        // Display images painting
+        const imgElementPainting = document.getElementById('painting-image');
+        imgElementPainting.src = imgUrl_painting;
+        imgElementPainting.style.display = 'block';
+
+        // Mengosongkan field value upload
         fileField.value = '';
 
         const convertBtn = document.getElementById('convertBtn');
@@ -224,9 +277,43 @@ async function handleUpload(event) {
         uploadText.textContent = "Upload";
         uploadSpinner.style.display = "none";
         uploadBtn.disabled = false;
+        showDiv();
+        setupModal("upload-image", "modalUpload", "img01", "caption");
+        setupModal("mask-image", "modalUpload", "img01", "caption");
+        setupModal("painting-image", "modalUpload", "img01", "caption");
     } catch (error) {
         console.error('Error:', error);
     }
 }
 
 document.getElementById('uploadForm').addEventListener('submit', handleUpload);
+
+function hideDiv() {
+    var div = document.getElementById("image-container");
+    div.style.display = "none";
+}
+
+function showDiv() {
+    var div = document.getElementById("image-container");
+    div.style.display = "flex"; // Revert to default 'block' if originalDisplayStyle is undefined
+}
+
+// Fungsi untuk mendapatkan UID
+function getUID() {
+    return localStorage.getItem('userUID') || 'defaultUID';
+  }
+  
+// Menyimpan UID di Frontend
+document.addEventListener('DOMContentLoaded', () => {
+if (!localStorage.getItem('userUID')) {
+    const uid = generateUID();  // Fungsi untuk membuat UID
+    localStorage.setItem('userUID', uid);
+}
+});
+
+// Fungsi sederhana untuk membuat UID
+function generateUID() {
+return 'uid-' + Math.random().toString(36).substr(2, 16);
+}
+
+hideDiv();

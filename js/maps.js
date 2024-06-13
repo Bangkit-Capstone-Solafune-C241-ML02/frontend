@@ -123,10 +123,13 @@ document.getElementById('sendBtn').addEventListener('click', async () => {
   sendSpinner.style.display = "inline-block";
 
   if (latLng) {
+      fileError.style.display = 'none';
       await sendCoordinates(latLng.lat, latLng.lng);
       createInputFields();
   } else {
       console.warn('No coordinates selected.');
+      const fileError = document.getElementById('fileError');
+      fileError.style.display = 'block';
   }
 
   // Reset button
@@ -223,7 +226,7 @@ async function sendDropdownValues(values) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ values })
+      body: JSON.stringify({ values: values, uid: getUID() })
     });
 
     if (!response.ok) {
@@ -244,19 +247,19 @@ async function sendDropdownValues(values) {
 
 function mapDropdownValues(values) {
   const mapping = {
-    'B1 (Aerosols)': 1,
-    'B2 (Blue)': 2,
-    'B3 (Green)': 3,
-    'B4 (Red)': 4,
-    'B5 (Red Edge 1)': 5,
-    'B6 (Red Edge 2)': 6,
-    'B7 (Red Edge 3)': 7,
-    'B8 (NIR)': 8,
-    'B8A (Red Edge 4)': 9,
-    'B9 (Water vapor)': 10,
-    'B11 (SWIR 1)': 11,
-    'B12 (SWIR 2)': 12
-  };
+    'B1 (Aerosols)': 0,
+    'B2 (Blue)': 1,
+    'B3 (Green)': 2,
+    'B4 (Red)': 3,
+    'B5 (Red Edge 1)': 4,
+    'B6 (Red Edge 2)': 5,
+    'B7 (Red Edge 3)': 6,
+    'B8 (NIR)': 7,
+    'B8A (Red Edge 4)': 8,
+    'B9 (Water vapor)': 9,
+    'B11 (SWIR 1)': 10,
+    'B12 (SWIR 2)': 11
+};
 
   return values.map(value => mapping[value]);
 }
@@ -320,31 +323,96 @@ document.addEventListener('DOMContentLoaded', () => {
 // Fungsi untuk mengirim koordinat ke server
 async function sendCoordinates(lat, lng) {
   const config = await loadConfig();
-  const endpoint = `${config.BASE_URL}${config.ENDPOINTS.DOWNLOAD}`;
+  const endpoint_download = `${config.BASE_URL}${config.ENDPOINTS.DOWNLOAD}`;
+  const endpoint_mask = `${config.BASE_URL}${config.ENDPOINTS.MASK_SENTINEL}`;
+  const endpoint_painting = `${config.BASE_URL}${config.ENDPOINTS.PAINTING_SENTINEL}`;
+  const endpoint_statistic = `${config.BASE_URL}${config.ENDPOINTS.STATISTIC}`;
 
   try {
-      const response = await fetch(endpoint, {
+    // Request download
+      const response_download = await fetch(endpoint_download, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ latitude: lat, longitude: lng })
+          body: JSON.stringify({ latitude: lat, longitude: lng, uid: getUID() })
       });
 
-      if (!response.ok) {
+      if (!response_download.ok) {
           throw new Error('Network response was not ok');
       }
 
-      const blob = await response.blob();
-      const imgUrl = URL.createObjectURL(blob);
+      const blob_download = await response_download.blob();
+      const imgUrl_download = URL.createObjectURL(blob_download);
+
+      sendText.textContent = "Detecting...";
+
+      // Request mask
+      const response_mask = await fetch(endpoint_mask, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({uid: getUID() })
+      });
+
+      if (!response_mask.ok) {
+          throw new Error('Network response was not ok');
+      }
+
+      const blob_mask = await response_mask.blob();
+      const imgUrl_mask = URL.createObjectURL(blob_mask);
+      
+      // Request painting
+      const response_painting= await fetch(endpoint_painting, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+      },
+         body: JSON.stringify({uid: getUID() })
+      });
+
+      if (!response_painting.ok) {
+          throw new Error('Network response was not ok');
+      }
+
+      const blob_painting = await response_painting.blob();
+      const imgUrl_painting = URL.createObjectURL(blob_painting);
+
+      // Request statistic
+      const response_statistic = await fetch(endpoint_statistic, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+      },
+         body: JSON.stringify({uid: getUID() })
+      });
+
+      if (!response_statistic.ok) {
+          throw new Error('Network response was not ok');
+      }
+
+      // Mengambil data statistik
+      const data = await response_statistic.json();
+      const { pixel, area, power } = data;
 
       const imgElement = document.getElementById('map-image');
-      imgElement.src = imgUrl;
+      imgElement.src = imgUrl_download;
       imgElement.style.display = 'block';
 
       const imgElementMask = document.getElementById('mask-image');
-      imgElementMask.src = imgUrl;
+      imgElementMask.src = imgUrl_mask;
       imgElementMask.style.display = 'block'
+
+      const imgElementPainting = document.getElementById('painting-image');
+      imgElementPainting.src = imgUrl_painting;
+      imgElementPainting.style.display = 'block'
+
+      showDiv();
+      forecast(lat,lng);
+      statistics(pixel, area, power);
+      document.getElementById('dynamics').style.display = 'block';
+      document.getElementById('statistics').style.display = 'block';
 
   } catch (error) {
       console.error('Error sending coordinates:', error);
@@ -380,20 +448,164 @@ function setupModal(imageId, modalId, modalImgId, captionId) {
 // Fungsi untuk menampilkan modal opening
 document.addEventListener('DOMContentLoaded', () => {
   const modalOpening = new bootstrap.Modal(document.getElementById('modalOpening'));
+  const lastModalShownTime = localStorage.getItem('lastModalShownTime');
+  const currentTime = new Date().getTime();
 
-  // Always show the modal
-  modalOpening.show();
+  // Check if modal should be shown based on time and storage
+  if (!lastModalShownTime || currentTime - parseInt(lastModalShownTime) > 5*60*1000) {
+    modalOpening.show();
+    localStorage.setItem('lastModalShownTime', currentTime.toString());
+  }
 
   // Close the modal
   document.querySelector('[data-bs-dismiss="modal"]').addEventListener('click', () => {
-      modalOpening.hide();
+    modalOpening.hide();
   });
 });
 
 
+// Fungsi untuk menyembunyikan 
+function hideDiv() {
+    var div = document.getElementById("image-container");
+    div.style.display = "none";
+}
+
+function showDiv() {
+    var div = document.getElementById("image-container");
+    div.style.display = "flex"; // Revert to default 'block' if originalDisplayStyle is undefined
+}
+
+
+async function forecast(lat, lon) {
+  const apiKey = 'd2f50901f43c3edecd250f380e7ea6a0';
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&cnt=32`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    const noonForecasts = data.list.filter(item => item.dt_txt.endsWith("12:00:00"));
+
+    // Update nama kota
+    const locationNameElement = document.getElementById('locationName');
+    if (locationNameElement) {
+      locationNameElement.innerHTML = `<strong>Weather Forecast for ${data.city.name}</strong>`;
+    }
+
+    // Container untuk menambahkan elemen cuaca
+    const forecast = document.getElementById('forecast');
+    const forecastBox = document.getElementById('box');
+    
+    // Kosongkan container sebelumnya
+    forecast.style.display = 'block';
+    forecastBox.innerHTML = '';
+
+    // Analisis optimal days
+    const optimalDaysCount = analyzeSolarPanelOptimality(noonForecasts);
+    const optimalDays = document.getElementById('optimalDays');
+
+    if (optimalDays) {
+      optimalDays.innerHTML = `<strong>Optimal Days: ${optimalDaysCount}</strong>`;
+    }
+
+    noonForecasts.forEach((forecast, index) => {
+      // Format tanggal
+      const date = new Date(forecast.dt_txt);
+      const options = { weekday: 'short', month: 'short', day: 'numeric' };
+      const formattedDate = date.toLocaleDateString('en-US', options);
+
+      // URL ikon
+      const iconUrl = `https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`;
+
+      // Buat elemen untuk setiap hari
+      const dayDiv = document.createElement('div');
+      dayDiv.classList.add('flex-column');
+      dayDiv.id = `day${index + 1}`;
+      
+      // Isi elemen dengan data cuaca
+      dayDiv.innerHTML = `
+        <p class="small"><strong>${formattedDate}</strong></p>
+        <img src="${iconUrl}" alt="Weather Icon" class="mb-3" style="width: 50px; height: 50px;">
+        <p class="mb-0"><strong>${forecast.weather[0].description}</strong></p>
+        <p class="mb-0" style="color:#B9B9B9;font-size:10px;">cloud coverage</p>
+        <p class="mb-0"><strong>${forecast.clouds.all}%</strong></p>
+      `;
+
+      // Tambahkan elemen ke dalam container
+      forecastBox.appendChild(dayDiv);
+    });
+
+  } catch (error) {
+    console.error('Ada masalah dengan permintaan fetch:', error);
+  }
+}
+
+function analyzeSolarPanelOptimality(noonForecasts) {
+  let optimalDays = 0;
+
+  noonForecasts.forEach(forecast => {
+    const description = forecast.weather[0].description;
+    const cloudCoverage = forecast.clouds.all;
+    const rainVolume = forecast.rain ? forecast.rain['3h'] : 0;
+    const temperature = forecast.main.temp; // Suhu dalam Celsius
+
+    console.log(`Date: ${forecast.dt_txt}`);
+    console.log(`Description: ${description}`);
+    console.log(`Cloud Coverage: ${cloudCoverage}%`);
+    console.log(`Rain Volume: ${rainVolume}mm`);
+    console.log(`Temperature: ${temperature.toFixed(2)}°C`);
+
+    // Tentukan optimalitas
+    if (
+      (description.includes('clear') || description.includes('few clouds') || description.includes('scattered clouds')) &&
+      cloudCoverage < 50 &&
+      rainVolume === 0 &&
+      temperature >= 10 && temperature <= 40 // Kisaran suhu optimal
+    ) {
+      console.log('Condition is optimal for solar panels.');
+      optimalDays++;
+    } else {
+      console.log('Condition is not optimal for solar panels.');
+    }
+    console.log('---');
+  });
+
+  console.log(`Total optimal days: ${optimalDays}`);
+  return optimalDays;
+}
+
+function statistics(pixel, area, power) {
+  const statistics = document.getElementById('statistics');
+  statistics.style.display = 'block';
+
+  document.getElementById('pixel').textContent = `Pixel: ${pixel}`;
+  document.getElementById('area').textContent = `Area: ${area} m²`;
+  // document.getElementById('watt').textContent = `Power: ${power} MW`;
+
+}
+
+// Fungsi untuk mendapatkan UID
+function getUID() {
+  return localStorage.getItem('userUID') || 'defaultUID';
+}
+
+// Menyimpan UID di Frontend
+document.addEventListener('DOMContentLoaded', () => {
+  if (!localStorage.getItem('userUID')) {
+    const uid = generateUID();  // Fungsi untuk membuat UID
+    localStorage.setItem('userUID', uid);
+  }
+});
+
+// Fungsi sederhana untuk membuat UID
+function generateUID() {
+  return 'uid-' + Math.random().toString(36).substr(2, 16);
+}
 
 setupModal("map-image", "modalSentinel", "img01", "caption");
 setupModal("mask-image", "modalMask", "img02", "caption");
-
-
+setupModal("painting-image", "modalPainting", "img03", "caption");
+hideDiv();
 initMap();
