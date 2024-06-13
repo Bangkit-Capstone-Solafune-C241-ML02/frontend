@@ -580,7 +580,7 @@ function statistics(pixel, area, power) {
 
   document.getElementById('pixel').textContent = `Pixel: ${pixel}`;
   document.getElementById('area').textContent = `Area: ${area} m²`;
-  document.getElementById('watt').textContent = `Power: ${power} MW`;
+  // document.getElementById('watt').textContent = `Power: ${power} MW`;
 
 }
 
