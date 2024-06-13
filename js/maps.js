@@ -326,6 +326,7 @@ async function sendCoordinates(lat, lng) {
   const endpoint_download = `${config.BASE_URL}${config.ENDPOINTS.DOWNLOAD}`;
   const endpoint_mask = `${config.BASE_URL}${config.ENDPOINTS.MASK_SENTINEL}`;
   const endpoint_painting = `${config.BASE_URL}${config.ENDPOINTS.PAINTING_SENTINEL}`;
+  const endpoint_statistic = `${config.BASE_URL}${config.ENDPOINTS.STATISTIC}`;
 
   try {
     // Request download
@@ -378,6 +379,23 @@ async function sendCoordinates(lat, lng) {
       const blob_painting = await response_painting.blob();
       const imgUrl_painting = URL.createObjectURL(blob_painting);
 
+      // Request statistic
+      const response_statistic = await fetch(endpoint_statistic, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+      },
+         body: JSON.stringify({uid: getUID() })
+      });
+
+      if (!response_statistic.ok) {
+          throw new Error('Network response was not ok');
+      }
+
+      // Mengambil data statistik
+      const data = await response_statistic.json();
+      const { pixel, area, power } = data;
+
       const imgElement = document.getElementById('map-image');
       imgElement.src = imgUrl_download;
       imgElement.style.display = 'block';
@@ -392,7 +410,7 @@ async function sendCoordinates(lat, lng) {
 
       showDiv();
       forecast(lat,lng);
-      statistics();
+      statistics(pixel, area, power);
 
   } catch (error) {
       console.error('Error sending coordinates:', error);
@@ -556,9 +574,14 @@ function analyzeSolarPanelOptimality(noonForecasts) {
   return optimalDays;
 }
 
-function statistics() {
+function statistics(pixel, area, power) {
   const statistics = document.getElementById('statistics');
   statistics.style.display = 'block';
+
+  document.getElementById('pixel').textContent = `Pixel: ${pixel}`;
+  document.getElementById('area').textContent = `Area: ${area} m²`;
+  document.getElementById('watt').textContent = `Power: ${power} MW`;
+
 }
 
 // Fungsi untuk mendapatkan UID
