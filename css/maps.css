@@ -467,8 +467,41 @@ border-radius: 50%;
 /*Akhir revisi*/
 
 /* Styling statistics */
-#statistics{
+#statistics, #dynamics{
   display: none;
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 100%;
+  margin: 20px auto;
+}
+
+#recommend {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 100%;
+  margin: 20px auto;
+}
+
+
+#statistics h4, #dynamics h4, #recommend h4 {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 10px;
+}
+
+#statistics p, #dynamics p, #recommend p {
+  margin: 10px 0;
+}
+
+#statistics:hover, #dynamics:hover, #recommend:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
 /* Styling footer */

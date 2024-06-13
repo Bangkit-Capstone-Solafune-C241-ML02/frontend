@@ -411,6 +411,8 @@ async function sendCoordinates(lat, lng) {
       showDiv();
       forecast(lat,lng);
       statistics(pixel, area, power);
+      document.getElementById('dynamics').style.display = 'block';
+      document.getElementById('statistics').style.display = 'block';
 
   } catch (error) {
       console.error('Error sending coordinates:', error);

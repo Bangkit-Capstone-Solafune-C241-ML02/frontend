@@ -73,8 +73,8 @@
     <!-- Navbar -->
     <nav class="navbar navbar-dark header">
       <div class="container-fluid">
-        <a class="navbar-brand" href="index.html">Sense-Vis
-          <img src="images/White.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+        <a class="navbar-brand" href="index.html" style="font-size: 30px;">Sense-Vis
+          <img src="images/White.svg" alt="Logo" style="max-width: 30%;" class="d-inline-block align-text-top">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -110,28 +110,31 @@
       <div class="sidebar bg-light p-3">
 
         <!-- Rekomendasi Lokasi -->
-        <h4>Recommendation <i class="bi bi-bookmark-star"></i></h4>
-        <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-            Solar Panel Location
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton"></ul>          
-        </div>
+        <div id="recommend">
+          <h4>Recommendation <i class="bi bi-bookmark-star"></i></h4>
+          <div class="dropdown text-center">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              Solar Panel Location
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton"></ul>          
+          </div>
+        </div>  
 
         <!-- Dynamic Input Fields -->
-        <h4 class="mt-3" id="SelectBand">Select Band 
-          <i class="bi bi-layers"></i>
-        </h4>
-        <div id="dynamicFields" class="mt-3"></div>
-        <!-- Convert Button Placeholder -->
-        <div id="convertButtonContainer" class="mt-2"></div>
+        <div id="dynamics"> 
+          <h4 class="mt-3" id="SelectBand">Select Band 
+            <i class="bi bi-layers"></i>
+          </h4>
+          <div id="dynamicFields" class="mt-3"></div>
+          <!-- Convert Button Placeholder -->
+          <div id="convertButtonContainer" class="mt-2"></div>
+        </div>
 
         <!-- Statistik -->
         <div id="statistics">
-          <h4 class="mt-3">Statistics <i class="bi bi-lightning-charge"></i></h4>
+          <h4 class="mt-3">Statistics <i class="bi bi-graph-up"></i></i></h4>
           <p id="pixel"></p>
           <p id="area"></p>
-          <!-- <p id="watt"></p> -->
         </div>
 
       </div>
