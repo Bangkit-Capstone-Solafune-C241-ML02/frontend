@@ -15,7 +15,7 @@
   }));
   d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
 })({
-  key: "AIzaSyA67rdNaV_KiISNaX2wCeHEkR3FOzmKuQI",
+  key: "AIzaSyA67rdNaV_KiISNaX2wCeHEkR3FOzmKuQI", // Place your Google Maps API key here
   v: "weekly",
   libraries: 'places'
 });
